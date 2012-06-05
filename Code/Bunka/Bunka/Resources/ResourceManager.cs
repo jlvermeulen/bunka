@@ -10,27 +10,23 @@ class ResourceManager
 {
     List<Resource> resources;
     List<ResourceConverter> converters;
+    List<ResourceProducer> producers;
     Dictionary<ResourceType, uint> resourceCounts;
 
     public ResourceManager()
     {
         resources = new List<Resource>();
         converters = new List<ResourceConverter>();
+        producers = new List<ResourceProducer>();
         resourceCounts = new Dictionary<ResourceType, uint>();
-        Test();
-    }
-
-    void Test()
-    {
-        Resource r1 = new Resource_Wood(this, 10);
-        resources.Add(r1);
-        Resource r2 = new Resource_Stone(this, 0);
-        resources.Add(r2);
-        converters.Add(new ResourceConverter(this, new Resource[1] { r1 }, new Resource[1] { r2 }, new byte[1] { 3 }, new byte[1] { 2 }, 5));
     }
 
     public void Update(GameTime t)
     {
+        foreach (ResourceProducer p in producers)
+        {
+            p.Update(t);
+        }
         foreach (ResourceConverter c in converters)
         {
             c.Update(t);
@@ -72,8 +68,14 @@ class ResourceManager
             default:
                 break;
         }
-
         return resource;
+    }
+
+    public ResourceProducer CreateResourceProducer(Resource resource, uint amount, float speed)
+    {
+        ResourceProducer temp = new ResourceProducer(this, resource, amount, speed);
+        producers.Add(temp);
+        return temp;
     }
 
     //////////////////

@@ -24,6 +24,7 @@ class ResourceProducer
         if (timer <= 0)
         {
             output.Amount += amount;
+            timer = speed;
         }
     }
 
