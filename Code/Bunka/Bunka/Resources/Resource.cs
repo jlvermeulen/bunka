@@ -1,8 +1,8 @@
-﻿enum ResourceType { Wood, Stone, None }
-
+﻿// parent class for all resources
 abstract class Resource
 {
-    ResourceType resourceType;
+    ResourceManager manager;
+    ResourceType type;
     uint amount;
 
     public Resource(ResourceManager manager, ResourceType type, uint amount)
@@ -14,7 +14,8 @@ abstract class Resource
         else
             manager.ResourceCounts.Add(type, amount);
 
-        resourceType = type;
+        this.manager = manager;
+        this.type = type;
         this.amount = amount;
     }
 
@@ -24,12 +25,19 @@ abstract class Resource
 
     public ResourceType ResourceType
     {
-        get { return resourceType; }
+        get { return type; }
     }
 
     public uint Amount
     {
         get { return amount; }
-        set { amount = value; }
+        set
+        {
+            uint diff = value - amount;
+            amount = value;
+            uint total;
+            manager.ResourceCounts.TryGetValue(type, out total);
+            manager.ResourceCounts[type] = total + diff;
+        }
     }
 }

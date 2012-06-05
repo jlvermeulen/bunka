@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+// class for managing a single game
 class BunkaGame
 {
     ResourceManager resourceManager;
