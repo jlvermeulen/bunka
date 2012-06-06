@@ -12,7 +12,6 @@ class ResourceManager
     List<ResourceConverter> converters;
     List<ResourceProducer> producers;
     Dictionary<ResourceType, uint> resourceCounts;
-    Dictionary<ResourceType, BuildingLinkedList> productionLocation, consumptionLocation;
 
     public ResourceManager()
     {

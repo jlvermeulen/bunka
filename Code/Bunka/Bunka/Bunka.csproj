@@ -76,7 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buildings\Building.cs" />
-    <Compile Include="Buildings\BuildingLinkedList.cs" />
     <Compile Include="Buildings\BuildingManager.cs" />
     <Compile Include="Buildings\Building_Conversion.cs" />
     <Compile Include="Buildings\Building_Conversion_Types.cs" />
