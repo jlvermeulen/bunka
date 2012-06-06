@@ -76,10 +76,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Buildings\BuildingLinkedList.cs" />
     <Compile Include="Buildings\BuildingManager.cs" />
+    <Compile Include="Buildings\Building_Conversion.cs" />
+    <Compile Include="Buildings\Building_Conversion_Types.cs" />
     <Compile Include="Buildings\Building_Production_Types.cs" />
     <Compile Include="Buildings\Building_Production.cs" />
     <Compile Include="BunkaGame.cs" />
+    <Compile Include="Carriers\Carrier.cs" />
+    <Compile Include="Carriers\CarrierManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Bunka.cs" />

@@ -3,6 +3,14 @@ abstract class Building_Production : Building
 {
     ResourceProducer[] production;
 
+    // overload for single producer
+    public Building_Production(BuildingType type, ResourceManager resourceManager, ResourceProducer production)
+        : base(type)
+    {
+        this.production = new ResourceProducer[] { production };
+    }
+
+    // overload for multiple producers
     public Building_Production(BuildingType type, ResourceManager resourceManager, ResourceProducer[] production)
         : base(type)
     {

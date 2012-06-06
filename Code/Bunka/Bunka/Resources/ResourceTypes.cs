@@ -17,6 +17,15 @@ class Resource_Wood : Resource
     }
 }
 
+class Resource_Coal : Resource
+{
+    public Resource_Coal(ResourceManager manager, uint amount)
+        : base(manager, ResourceType.Coal, amount)
+    {
+
+    }
+}
+
 class Resource_None : Resource
 {
     public Resource_None(ResourceManager manager)

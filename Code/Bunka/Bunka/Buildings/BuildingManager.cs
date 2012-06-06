@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 // all building types
-enum BuildingType { Quarry, Lumberjack, Marketplace };
+enum BuildingType { Quarry, Lumberjack, CokingPlant };
 
 // class for building administration
 class BuildingManager
@@ -13,6 +13,14 @@ class BuildingManager
     {
         buildings = new List<Building>();
         this.resourceManager = resourceManager;
+        //Test();
+    }
+
+    public void Test()
+    {
+        CreateBuilding(BuildingType.Quarry);
+        CreateBuilding(BuildingType.Lumberjack);
+        CreateBuilding(BuildingType.CokingPlant);
     }
 
     //////////////////
@@ -28,6 +36,9 @@ class BuildingManager
                 break;
             case BuildingType.Quarry:
                 buildings.Add(new Building_Production_Quarry(resourceManager));
+                break;
+            case BuildingType.CokingPlant:
+                buildings.Add(new Building_Conversion_CokingPlant(resourceManager));
                 break;
             default:
                 break;

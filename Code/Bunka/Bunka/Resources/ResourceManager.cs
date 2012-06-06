@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 // all resource types
-enum ResourceType { Wood, Stone, None }
+enum ResourceType { Wood, Stone, Coal, None }
 
 // class for resource administration
 class ResourceManager
@@ -12,6 +12,7 @@ class ResourceManager
     List<ResourceConverter> converters;
     List<ResourceProducer> producers;
     Dictionary<ResourceType, uint> resourceCounts;
+    Dictionary<ResourceType, BuildingLinkedList> productionLocation, consumptionLocation;
 
     public ResourceManager()
     {
@@ -33,8 +34,10 @@ class ResourceManager
         }
         // test
         Console.Clear();
-        Console.WriteLine(resources[0].ResourceType + "\t | \t" + resources[0].Amount);
-        Console.WriteLine(resources[1].ResourceType + "\t | \t" + resources[1].Amount);
+        for (int i = 0; i < resourceCounts.Count; i++)
+        {
+            Console.WriteLine((ResourceType) i +"\t | \t" + resourceCounts[(ResourceType) i]);
+        }
     }
 
     //////////////////
@@ -48,7 +51,7 @@ class ResourceManager
         return count;
     }
 
-    public Resource CreateResource(ResourceType type, uint amount)
+    public Resource CreateResource(ResourceType type, uint amount = 0)
     {
         Resource resource = null;
         switch (type)
@@ -65,6 +68,10 @@ class ResourceManager
                 resource = new Resource_Wood(this, amount);
                 resources.Add(resource);
                 break;
+            case ResourceType.Coal:
+                resource = new Resource_Coal(this, amount);
+                resources.Add(resource);
+                break;
             default:
                 break;
         }
@@ -75,6 +82,22 @@ class ResourceManager
     {
         ResourceProducer temp = new ResourceProducer(this, resource, amount, speed);
         producers.Add(temp);
+        return temp;
+    }
+
+    // overload for single input and output
+    public ResourceConverter CreateResourceConverter(Resource input, Resource output, byte inSize, byte outSize, float speed)
+    {
+        ResourceConverter temp = new ResourceConverter(this, new Resource[] { input }, new Resource[] { output }, new byte[] { inSize }, new byte[] { outSize }, speed);
+        converters.Add(temp);
+        return temp;
+    }
+
+    // overload for multiple inputs and outputs
+    public ResourceConverter CreateResourceConverter(Resource[] input, Resource[] output, byte[] inSize, byte[] outSize, float speed)
+    {
+        ResourceConverter temp = new ResourceConverter(this, input, output, inSize, outSize, speed);
+        converters.Add(temp);
         return temp;
     }
 
