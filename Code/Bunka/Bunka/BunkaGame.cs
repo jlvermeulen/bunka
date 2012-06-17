@@ -13,11 +13,13 @@ class BunkaGame
         resourceManager = new ResourceManager();
         buildingManager = new BuildingManager(resourceManager);
         carrierManager = new CarrierManager(resourceManager, buildingManager);
+        resourceManager.CarrierManager = carrierManager;
     }
 
     public void Update(GameTime t)
     {
         resourceManager.Update(t);
+        buildingManager.Update(t);
         carrierManager.Update(t);
     }
 

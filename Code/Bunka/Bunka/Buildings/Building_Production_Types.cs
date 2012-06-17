@@ -2,7 +2,7 @@
 class Building_Production_Quarry : Building_Production
 {
     public Building_Production_Quarry(ResourceManager resourceManager)
-        : base(BuildingType.Quarry, resourceManager, resourceManager.CreateResourceProducer(resourceManager.CreateResource(ResourceType.Stone), 1, 5))
+        : base(BuildingType.Quarry, resourceManager, resourceManager.CreateResourceProducer(ResourceType.Stone, 1, 5))
     {
 
     }
@@ -11,7 +11,7 @@ class Building_Production_Quarry : Building_Production
 class Building_Production_Lumberjack : Building_Production
 {
     public Building_Production_Lumberjack(ResourceManager resourceManager)
-        : base(BuildingType.Lumberjack, resourceManager, resourceManager.CreateResourceProducer(resourceManager.CreateResource(ResourceType.Wood), 1, 5))
+        : base(BuildingType.Lumberjack, resourceManager, resourceManager.CreateResourceProducer(ResourceType.Wood, 1, 5))
     {
 
     }

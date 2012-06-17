@@ -3,15 +3,16 @@
 // class for producing resources
 class ResourceProducer
 {
-    ResourceManager manager;
+    ResourceManager resourceManager;
     Resource output;
+    ResourceType type;
     uint amount;
     float speed, timer;
 
-    public ResourceProducer(ResourceManager manager, Resource output, uint amount, float speed)
+    public ResourceProducer(ResourceManager resourceManager, ResourceType type, uint amount, float speed)
     {
-        this.manager = manager;
-        this.output = output;
+        this.resourceManager = resourceManager;
+        this.type = type;
         this.amount = amount;
         this.speed = this.timer = speed;
     }
@@ -21,7 +22,7 @@ class ResourceProducer
         if (timer > 0)
             timer -= (float)t.ElapsedGameTime.TotalSeconds;
 
-        if (timer <= 0)
+        if (timer <= 0 && output != null)
         {
             output.Amount += amount;
             timer = speed;
@@ -35,11 +36,12 @@ class ResourceProducer
     public Resource Output
     {
         get { return output; }
+        set { output = value; }
     }
 
     public ResourceType OutputType
     {
-        get { return output.ResourceType; }
+        get { return type; }
     }
 
     public float Speed

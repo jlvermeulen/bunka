@@ -3,19 +3,22 @@
 // class for converting one resource into another
 class ResourceConverter
 {
-    ResourceManager manager;
+    ResourceManager resourceManager;
     Resource[] input, output;
+    ResourceType[] inputTypes, outputTypes;
     float speed, timer;
     byte[] inSize, outSize;
 
-    public ResourceConverter(ResourceManager manager, Resource[] input, Resource[] output, byte[] inSize, byte[] outSize, float speed)
+    public ResourceConverter(ResourceManager resourceManager, ResourceType[] inputTypes, ResourceType[] outputTypes, byte[] inSize, byte[] outSize, float speed)
     {
-        this.manager = manager;
-        this.input = input;
-        this.output = output;
+        this.resourceManager = resourceManager;
+        this.inputTypes = inputTypes;
+        this.outputTypes = outputTypes;
         this.inSize = inSize;
         this.outSize = outSize;
         this.speed = this.timer = speed;
+        this.input = new Resource[inputTypes.Length];
+        this.output = new Resource[outputTypes.Length];
     }
 
     public void Update(GameTime t)
@@ -25,9 +28,9 @@ class ResourceConverter
 
         if (timer <= 0 && CanConvert)
         {
-            for (int i = 0; i < input.GetLength(0); i++)
+            for (int i = 0; i < input.Length; i++)
                 input[i].Amount -= inSize[i];
-            for (int i = 0; i < output.GetLength(0); i++)
+            for (int i = 0; i < output.Length; i++)
                 output[i].Amount += outSize[i];
             timer = speed;
         }
@@ -49,30 +52,22 @@ class ResourceConverter
 
     public ResourceType[] InputTypes
     {
-        get 
-        { 
-            int i = input.GetLength(0);
-            ResourceType[] types = new ResourceType[i];
-            for (int j = 0; j < i; j++)
-            {
-               types[j] = input[j].ResourceType;
-            }
-            return types;
-        }
+        get { return inputTypes; }
     }
 
     public ResourceType[] OutputTypes
     {
-        get 
-        { 
-            int i = output.GetLength(0);
-            ResourceType[] types = new ResourceType[i];
-            for (int j = 0; j < i; j++)
-            {
-               types[j] = output[j].ResourceType;
-            }
-            return types;
-        }
+        get { return outputTypes; }
+    }
+
+    public byte[] InputSize
+    {
+        get { return inSize; }
+    }
+
+    public byte[] OutputSize
+    {
+        get { return outSize; }
     }
 
     public float Speed
@@ -85,13 +80,10 @@ class ResourceConverter
     {
         get
         {
-            bool canConvert = true;
-            for (int i = 0; i < input.GetLength(0); i++)
-            {
-                if (input[i].Amount < inSize[i])
-                    canConvert = false;
-            }
-            return canConvert;
+            for (int i = 0; i < input.Length; i++)
+                if (input[i] == null || input[i].Amount < inSize[i])
+                    return false;
+            return true;
         }
     }
 }

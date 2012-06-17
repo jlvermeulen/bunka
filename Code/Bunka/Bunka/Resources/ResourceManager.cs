@@ -8,10 +8,12 @@ enum ResourceType { Wood, Stone, Coal, None }
 // class for resource administration
 class ResourceManager
 {
+    CarrierManager carrierManager;
     List<Resource> resources;
     List<ResourceConverter> converters;
     List<ResourceProducer> producers;
     Dictionary<ResourceType, uint> resourceCounts;
+    Dictionary<ResourceType, LinkedList<Resource>> freeResources;
 
     public ResourceManager()
     {
@@ -19,29 +21,27 @@ class ResourceManager
         converters = new List<ResourceConverter>();
         producers = new List<ResourceProducer>();
         resourceCounts = new Dictionary<ResourceType, uint>();
+        freeResources = new Dictionary<ResourceType, LinkedList<Resource>>();
     }
 
     public void Update(GameTime t)
     {
-        foreach (ResourceProducer p in producers)
-        {
-            p.Update(t);
-        }
-        foreach (ResourceConverter c in converters)
-        {
-            c.Update(t);
-        }
         // test
         Console.Clear();
         for (int i = 0; i < resourceCounts.Count; i++)
         {
-            Console.WriteLine((ResourceType) i +"\t | \t" + resourceCounts[(ResourceType) i]);
+            Console.WriteLine((ResourceType)i + "\t | \t" + resourceCounts[(ResourceType)i]);
         }
     }
 
     //////////////////
     //   METHODS    //
     //////////////////
+
+    public void RequestResource(ResourceType type, uint amount, Building destination)
+    {
+        carrierManager.RequestCarrier(new CarryRequest(type, amount, destination));
+    }
 
     public uint ResourceCount(ResourceType type)
     {
@@ -77,23 +77,23 @@ class ResourceManager
         return resource;
     }
 
-    public ResourceProducer CreateResourceProducer(Resource resource, uint amount, float speed)
+    public ResourceProducer CreateResourceProducer(ResourceType type, uint amount, float speed)
     {
-        ResourceProducer temp = new ResourceProducer(this, resource, amount, speed);
+        ResourceProducer temp = new ResourceProducer(this, type, amount, speed);
         producers.Add(temp);
         return temp;
     }
 
     // overload for single input and output
-    public ResourceConverter CreateResourceConverter(Resource input, Resource output, byte inSize, byte outSize, float speed)
+    public ResourceConverter CreateResourceConverter(ResourceType input, ResourceType output, byte inSize, byte outSize, float speed)
     {
-        ResourceConverter temp = new ResourceConverter(this, new Resource[] { input }, new Resource[] { output }, new byte[] { inSize }, new byte[] { outSize }, speed);
+        ResourceConverter temp = new ResourceConverter(this, new ResourceType[] { input }, new ResourceType[] { output }, new byte[] { inSize }, new byte[] { outSize }, speed);
         converters.Add(temp);
         return temp;
     }
 
     // overload for multiple inputs and outputs
-    public ResourceConverter CreateResourceConverter(Resource[] input, Resource[] output, byte[] inSize, byte[] outSize, float speed)
+    public ResourceConverter CreateResourceConverter(ResourceType[] input, ResourceType[] output, byte[] inSize, byte[] outSize, float speed)
     {
         ResourceConverter temp = new ResourceConverter(this, input, output, inSize, outSize, speed);
         converters.Add(temp);
@@ -107,5 +107,15 @@ class ResourceManager
     public Dictionary<ResourceType, uint> ResourceCounts
     {
         get { return resourceCounts; }
+    }
+
+    public Dictionary<ResourceType, LinkedList<Resource>> FreeResources
+    {
+        get { return freeResources; }
+    }
+
+    public CarrierManager CarrierManager
+    {
+        set { carrierManager = value; }
     }
 }

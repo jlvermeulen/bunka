@@ -1,44 +1,68 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 // all building types
-enum BuildingType { Quarry, Lumberjack, CokingPlant };
+enum BuildingType { Production, Quarry, Lumberjack, Conversion, CokingPlant };
 
 // class for building administration
 class BuildingManager
 {
-    List<Building> buildings;
+    List<Building_Production> production;
+    List<Building_Conversion> conversion;
     ResourceManager resourceManager;
 
     public BuildingManager(ResourceManager resourceManager)
     {
-        buildings = new List<Building>();
+        production = new List<Building_Production>();
+        conversion = new List<Building_Conversion>();
         this.resourceManager = resourceManager;
-        //Test();
+        Test();
     }
 
     public void Test()
     {
-        CreateBuilding(BuildingType.Quarry);
-        CreateBuilding(BuildingType.Lumberjack);
-        CreateBuilding(BuildingType.CokingPlant);
+        CreateProductionBuilding(BuildingType.Quarry);
+        CreateProductionBuilding(BuildingType.Lumberjack);
+        CreateConversionBuilding(BuildingType.CokingPlant);
+    }
+
+    public void Update(GameTime t)
+    {
+        foreach (Building_Production p in production)
+        {
+            p.Update(t);
+        }
+        foreach (Building_Conversion c in conversion)
+        {
+            c.Update(t);
+        }
     }
 
     //////////////////
     //   METHODS    //
     //////////////////
 
-    public void CreateBuilding(BuildingType type)
+    public void CreateProductionBuilding(BuildingType type)
     {
         switch (type)
         {
             case BuildingType.Lumberjack:
-                buildings.Add(new Building_Production_Lumberjack(resourceManager));
+                production.Add(new Building_Production_Lumberjack(resourceManager));
                 break;
             case BuildingType.Quarry:
-                buildings.Add(new Building_Production_Quarry(resourceManager));
+                production.Add(new Building_Production_Quarry(resourceManager));
                 break;
+            default:
+                break;
+        }
+    }
+
+    public void CreateConversionBuilding(BuildingType type)
+    {
+        switch (type)
+        {
             case BuildingType.CokingPlant:
-                buildings.Add(new Building_Conversion_CokingPlant(resourceManager));
+                conversion.Add(new Building_Conversion_CokingPlant(resourceManager));
                 break;
             default:
                 break;
@@ -51,6 +75,6 @@ class BuildingManager
 
     public List<Building> Buildings
     {
-        get { return buildings; }
+        get { return null; }
     }
 }

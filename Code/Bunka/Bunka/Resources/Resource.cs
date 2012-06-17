@@ -1,20 +1,21 @@
 ﻿// parent class for all resources
 abstract class Resource
 {
-    ResourceManager manager;
+    ResourceManager resourceManager;
     ResourceType type;
     uint amount;
+    Building location;
 
-    public Resource(ResourceManager manager, ResourceType type, uint amount)
+    public Resource(ResourceManager resourceManager, ResourceType type, uint amount)
     {
+        // add amount to resource count or create resource count if it is the first resource of its kind
         uint a;
-        bool exists = manager.ResourceCounts.TryGetValue(type, out a);
-        if (exists)
-            manager.ResourceCounts[type] = a + amount;
+        if (resourceManager.ResourceCounts.TryGetValue(type, out a))
+            resourceManager.ResourceCounts[type] = a + amount;
         else
-            manager.ResourceCounts.Add(type, amount);
+            resourceManager.ResourceCounts.Add(type, amount);
 
-        this.manager = manager;
+        this.resourceManager = resourceManager;
         this.type = type;
         this.amount = amount;
     }
@@ -33,11 +34,19 @@ abstract class Resource
         get { return amount; }
         set
         {
+            // update amount and resource count
             uint diff = value - amount;
             amount = value;
             uint total;
-            manager.ResourceCounts.TryGetValue(type, out total);
-            manager.ResourceCounts[type] = total + diff;
+            resourceManager.ResourceCounts.TryGetValue(type, out total);
+            resourceManager.ResourceCounts[type] = total + diff;
         }
+    }
+
+    // building that owns the resource, null if being moved
+    public Building Location
+    {
+        get { return location; }
+        set { location = value; }
     }
 }

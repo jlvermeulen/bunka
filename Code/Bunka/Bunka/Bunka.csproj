@@ -84,6 +84,7 @@
     <Compile Include="BunkaGame.cs" />
     <Compile Include="Carriers\Carrier.cs" />
     <Compile Include="Carriers\CarrierManager.cs" />
+    <Compile Include="Carriers\CarryRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Bunka.cs" />
