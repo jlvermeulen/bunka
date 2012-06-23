@@ -6,6 +6,7 @@ abstract class Building_Conversion : Building
 {
     ResourceManager resourceManager;
     ResourceConverter[] converters;
+    List<ResourceType> requestedResources;
 
     // overload for single converter
     public Building_Conversion(BuildingType type, ResourceManager resourceManager, ResourceConverter converter)
@@ -13,6 +14,7 @@ abstract class Building_Conversion : Building
     {
         this.resourceManager = resourceManager;
         this.converters = new ResourceConverter[] { converter };
+        requestedResources = new List<ResourceType>();
     }
 
     // overload for multiple converters
@@ -21,6 +23,7 @@ abstract class Building_Conversion : Building
     {
         this.resourceManager = resourceManager;
         this.converters = converters;
+        requestedResources = new List<ResourceType>();
     }
 
     public void Update(GameTime t)
@@ -45,18 +48,33 @@ abstract class Building_Conversion : Building
                         resourceManager.FreeResources.Add(c.OutputTypes[i], list);
                     }
                 }
+
             for (int i = 0; i < c.Input.Length; i++)
             {
                 if (c.Input[i] == null)
                 {
+                    // create new resource
                     c.Input[i] = resourceManager.CreateResource(c.InputTypes[i]);
                     c.Input[i].Location = this;
                 }
-                else if (c.Input[i].Amount < c.InputSize[i])
+                else if (c.Input[i].Amount < c.InputSize[i] && !requestedResources.Contains(c.Input[i].ResourceType))
+                {
+                    // request for required resource to be delivered
                     resourceManager.RequestResource(c.InputTypes[i], c.InputSize[i] - c.Input[i].Amount, this);
+                    requestedResources.Add(c.Input[i].ResourceType);
+                }
             }
             c.Update(t);
         }
+    }
+
+    //////////////////
+    //   METHODS    //
+    //////////////////
+
+    public void DeliverResource(ResourceType type)
+    {
+        requestedResources.Remove(type);
     }
 
     //////////////////

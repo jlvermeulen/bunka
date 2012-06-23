@@ -18,6 +18,7 @@ class Carrier
     {
         if (destination != null)
         {
+            // TODO: add check to see if carrier has arrived at destination
             if (true)
             {
                 // check if building is a conversion building
@@ -29,6 +30,7 @@ class Carrier
                         foreach (Resource r in c.Input)
                             if (r.ResourceType == resourceType)
                             {
+                                b.DeliverResource(resourceType);
                                 r.Amount += amount;
                                 amount = 0;
                                 destination = null;
