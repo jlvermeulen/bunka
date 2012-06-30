@@ -5,46 +5,52 @@ using Microsoft.Xna.Framework;
 abstract class Building_Production : Building
 {
     ResourceManager resourceManager;
-    ResourceProducer[] production;
+    ResourceProducer[] producers;
 
     // overload for single producer
-    public Building_Production(BuildingType type, ResourceManager resourceManager, ResourceProducer production)
+    public Building_Production(BuildingType type, ResourceManager resourceManager, ResourceProducer producers)
         : base(type)
     {
-        this.production = new ResourceProducer[] { production };
+        this.producers = new ResourceProducer[] { producers };
         this.resourceManager = resourceManager;
+        InitialiseProducers();
     }
 
     // overload for multiple producers
-    public Building_Production(BuildingType type, ResourceManager resourceManager, ResourceProducer[] production)
+    public Building_Production(BuildingType type, ResourceManager resourceManager, ResourceProducer[] producers)
         : base(type)
     {
-        this.production = production;
+        this.producers = producers;
         this.resourceManager = resourceManager;
+        InitialiseProducers();
     }
 
     public void Update(GameTime t)
     {
-        foreach (ResourceProducer p in production)
-        {
-            if (p.Output == null)
-            {
-                // create new resource
-                p.Output = resourceManager.CreateResource(p.OutputType);
-                p.Output.Location = this;
-
-                // add to free resources, create new entry for resource if necessary
-                LinkedList<Resource> list;
-                if (resourceManager.FreeResources.TryGetValue(p.OutputType, out list))
-                    list.AddFirst(p.Output);
-                else
-                {
-                    list = new LinkedList<Resource>();
-                    list.AddFirst(p.Output);
-                    resourceManager.FreeResources.Add(p.OutputType, list);
-                }
-            }
+        foreach (ResourceProducer p in producers)
             p.Update(t);
+    }
+
+    //////////////////
+    //   METHODS    //
+    //////////////////
+
+    void InitialiseProducers()
+    {
+        for (int i = 0; i < producers.Length; i++)
+        {
+            producers[i].Output.Location = this;
+
+            // add to free resources, create new entry for resource if necessary
+            LinkedList<Resource> list;
+            if (resourceManager.FreeResources.TryGetValue(producers[i].OutputType, out list))
+                list.AddFirst(producers[i].Output);
+            else
+            {
+                list = new LinkedList<Resource>();
+                list.AddFirst(producers[i].Output);
+                resourceManager.FreeResources.Add(producers[i].OutputType, list);
+            }
         }
     }
 
@@ -54,7 +60,7 @@ abstract class Building_Production : Building
 
     public ResourceProducer[] ResourceProducers
     {
-        get { return production; }
-        set { production = value; }
+        get { return producers; }
+        set { producers = value; }
     }
 }

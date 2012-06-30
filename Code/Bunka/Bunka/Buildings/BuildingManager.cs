@@ -23,6 +23,8 @@ class BuildingManager
     {
         CreateProductionBuilding(BuildingType.Quarry);
         CreateProductionBuilding(BuildingType.Lumberjack);
+        CreateProductionBuilding(BuildingType.Lumberjack);
+        CreateProductionBuilding(BuildingType.Lumberjack);
         CreateConversionBuilding(BuildingType.CokingPlant);
     }
 

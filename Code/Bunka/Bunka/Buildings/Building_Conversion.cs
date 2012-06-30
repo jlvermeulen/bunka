@@ -5,67 +5,28 @@ using Microsoft.Xna.Framework;
 abstract class Building_Conversion : Building
 {
     ResourceManager resourceManager;
-    ResourceConverter[] converters;
+    ResourceConverter converter;
     List<ResourceType> requestedResources;
 
-    // overload for single converter
     public Building_Conversion(BuildingType type, ResourceManager resourceManager, ResourceConverter converter)
         : base(type)
     {
         this.resourceManager = resourceManager;
-        this.converters = new ResourceConverter[] { converter };
-        requestedResources = new List<ResourceType>();
-    }
-
-    // overload for multiple converters
-    public Building_Conversion(BuildingType type, ResourceManager resourceManager, ResourceConverter[] converters)
-        : base(type)
-    {
-        this.resourceManager = resourceManager;
-        this.converters = converters;
+        this.converter = converter;
         requestedResources = new List<ResourceType>();
     }
 
     public void Update(GameTime t)
     {
-        foreach (ResourceConverter c in converters)
+        for (int i = 0; i < converter.Input.Length; i++)
         {
-            for (int i = 0; i < c.Output.Length; i++)
-                if (c.Output[i] == null)
-                {
-                    // create new resource
-                    c.Output[i] = resourceManager.CreateResource(c.OutputTypes[i]);
-                    c.Output[i].Location = this;
-
-                    // add to free resources, create new entry for resource if necessary
-                    LinkedList<Resource> list;
-                    if (resourceManager.FreeResources.TryGetValue(c.OutputTypes[i], out list))
-                        list.AddFirst(c.Output[i]);
-                    else
-                    {
-                        list = new LinkedList<Resource>();
-                        list.AddFirst(c.Output[i]);
-                        resourceManager.FreeResources.Add(c.OutputTypes[i], list);
-                    }
-                }
-
-            for (int i = 0; i < c.Input.Length; i++)
+            if (converter.Input[i].Amount < converter.InputSize[i] && !requestedResources.Contains(converter.Input[i].ResourceType))
             {
-                if (c.Input[i] == null)
-                {
-                    // create new resource
-                    c.Input[i] = resourceManager.CreateResource(c.InputTypes[i]);
-                    c.Input[i].Location = this;
-                }
-                else if (c.Input[i].Amount < c.InputSize[i] && !requestedResources.Contains(c.Input[i].ResourceType))
-                {
-                    // request for required resource to be delivered
-                    resourceManager.RequestResource(c.InputTypes[i], c.InputSize[i] - c.Input[i].Amount, this);
-                    requestedResources.Add(c.Input[i].ResourceType);
-                }
+                resourceManager.RequestResource(converter.InputTypes[i], converter.InputSize[i] - converter.Input[i].Amount, this);
+                requestedResources.Add(converter.Input[i].ResourceType);
             }
-            c.Update(t);
         }
+        converter.Update(t);
     }
 
     //////////////////
@@ -77,13 +38,35 @@ abstract class Building_Conversion : Building
         requestedResources.Remove(type);
     }
 
+    void InitialiseConverters()
+    {
+        for (int i = 0; i < converter.Input.Length; i++)
+            converter.Input[i].Location = this;
+
+        for (int i = 0; i < converter.Output.Length; i++)
+        {
+            converter.Output[i].Location = this;
+
+            // add to free resources, create new entry for resource if necessary
+            LinkedList<Resource> list;
+            if (resourceManager.FreeResources.TryGetValue(converter.OutputTypes[i], out list))
+                list.AddFirst(converter.Output[i]);
+            else
+            {
+                list = new LinkedList<Resource>();
+                list.AddFirst(converter.Output[i]);
+                resourceManager.FreeResources.Add(converter.OutputTypes[i], list);
+            }
+        }
+    }
+
     //////////////////
     //  PROPERTIES  //
     //////////////////
 
-    public ResourceConverter[] ResourceConverters
+    public ResourceConverter ResourceConverter
     {
-        get { return converters; }
-        set { converters = value; }
+        get { return converter; }
+        set { converter = value; }
     }
 }

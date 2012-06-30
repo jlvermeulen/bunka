@@ -65,18 +65,31 @@ class CarrierManager
                     if (list.Count == 0)
                         continue;
 
+                    bool broken = false;
                     foreach (Resource r in list)
                     {
                         // check if amount meets request
-                        if (r.Amount >= node.Value.Amount)
+                        if (r.Amount > 0)
                         {
                             // give resource to carrier
                             idleCarriers[0].Carrying = node.Value.ResourceType;
                             idleCarriers[0].Destination = node.Value.Destination;
-                            idleCarriers[0].Amount = node.Value.Amount;
 
-                            // remove amount from resource
-                            r.Amount -= node.Value.Amount;
+                            // resource amount is large enough
+                            if (r.Amount >= node.Value.Amount)
+                            {
+                                idleCarriers[0].Amount = node.Value.Amount;
+                                r.Amount -= node.Value.Amount;
+                            }
+                            // resource amount is insufficient
+                            else
+                            {
+                                // create new request for remainder of requested resource
+                                RequestCarrier(new CarryRequest(node.Value.ResourceType, node.Value.Amount - r.Amount, node.Value.Destination));
+
+                                idleCarriers[0].Amount = r.Amount;
+                                r.Amount = 0;
+                            }                            
 
                             // move carrier to busy carriers list
                             busyCarriers.Add(idleCarriers[0]);
@@ -85,13 +98,15 @@ class CarrierManager
                             // move to next request
                             requests.Remove(node);
                             node = requests.First;
+                            broken = true;
+                            break;
                         }
-                        else
-                            node = node.Next;
                     }
+
+                    // move to next request if current request could not be fulfilled
+                    if (!broken)
+                        node = node.Next;
                 }
-                else
-                    continue;
             }
         }
     }

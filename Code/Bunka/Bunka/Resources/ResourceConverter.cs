@@ -19,6 +19,11 @@ class ResourceConverter
         this.speed = this.timer = speed;
         this.input = new Resource[inputTypes.Length];
         this.output = new Resource[outputTypes.Length];
+
+        for (int i = 0; i < input.Length; i++)
+            input[i] = resourceManager.CreateResource(inputTypes[i]);
+        for (int i = 0; i < output.Length; i++)
+            output[i] = resourceManager.CreateResource(outputTypes[i]);
     }
 
     public void Update(GameTime t)
@@ -81,7 +86,7 @@ class ResourceConverter
         get
         {
             for (int i = 0; i < input.Length; i++)
-                if (input[i] == null || input[i].Amount < inSize[i])
+                if (input[i].Amount < inSize[i])
                     return false;
             return true;
         }

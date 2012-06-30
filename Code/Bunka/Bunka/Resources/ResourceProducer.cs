@@ -15,6 +15,7 @@ class ResourceProducer
         this.type = type;
         this.amount = amount;
         this.speed = this.timer = speed;
+        this.output = resourceManager.CreateResource(type);
     }
 
     public void Update(GameTime t)

@@ -26,16 +26,15 @@ class Carrier
                 {
                     // add amount to appropriate resource
                     Building_Conversion b = (Building_Conversion)destination;
-                    foreach (ResourceConverter c in b.ResourceConverters)
-                        foreach (Resource r in c.Input)
-                            if (r.ResourceType == resourceType)
-                            {
-                                b.DeliverResource(resourceType);
-                                r.Amount += amount;
-                                amount = 0;
-                                destination = null;
-                                resourceType = ResourceType.None;
-                            }
+                    foreach (Resource r in b.ResourceConverter.Input)
+                        if (r.ResourceType == resourceType)
+                        {
+                            b.DeliverResource(resourceType);
+                            r.Amount += amount;
+                            amount = 0;
+                            destination = null;
+                            resourceType = ResourceType.None;
+                        }
                 }
                 // request moving to idle carriers list
                 carrierManager.MoveToIdle(this);
