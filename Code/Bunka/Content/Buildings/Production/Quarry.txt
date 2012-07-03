@@ -1,0 +1,4 @@
+Type = Quarry
+Produces = Stone
+Amount = 1
+Speed = 5

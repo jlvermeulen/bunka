@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-// parent class for buildings that produce resources
-abstract class Building_Production : Building
+// class for buildings that produce resources
+class BuildingProduction : Building
 {
     ResourceManager resourceManager;
     ResourceProducer[] producers;
 
     // overload for single producer
-    public Building_Production(BuildingType type, ResourceManager resourceManager, ResourceProducer producers)
+    public BuildingProduction(BuildingType type, ResourceManager resourceManager, ResourceProducer producers)
         : base(type)
     {
         this.producers = new ResourceProducer[] { producers };
@@ -17,7 +17,7 @@ abstract class Building_Production : Building
     }
 
     // overload for multiple producers
-    public Building_Production(BuildingType type, ResourceManager resourceManager, ResourceProducer[] producers)
+    public BuildingProduction(BuildingType type, ResourceManager resourceManager, ResourceProducer[] producers)
         : base(type)
     {
         this.producers = producers;

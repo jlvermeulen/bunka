@@ -76,11 +76,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Buildings\BuildingLoader.cs" />
     <Compile Include="Buildings\BuildingManager.cs" />
-    <Compile Include="Buildings\Building_Conversion.cs" />
-    <Compile Include="Buildings\Building_Conversion_Types.cs" />
-    <Compile Include="Buildings\Building_Production_Types.cs" />
-    <Compile Include="Buildings\Building_Production.cs" />
+    <Compile Include="Buildings\BuildingConversion.cs" />
+    <Compile Include="Buildings\BuildingProduction.cs" />
     <Compile Include="BunkaGame.cs" />
     <Compile Include="Carriers\Carrier.cs" />
     <Compile Include="Carriers\CarrierManager.cs" />

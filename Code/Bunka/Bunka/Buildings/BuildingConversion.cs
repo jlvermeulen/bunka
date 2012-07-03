@@ -2,13 +2,13 @@
 using Microsoft.Xna.Framework;
 
 // parent class for buildings that convert resources
-abstract class Building_Conversion : Building
+class BuildingConversion : Building
 {
     ResourceManager resourceManager;
     ResourceConverter converter;
     List<ResourceType> requestedResources;
 
-    public Building_Conversion(BuildingType type, ResourceManager resourceManager, ResourceConverter converter)
+    public BuildingConversion(BuildingType type, ResourceManager resourceManager, ResourceConverter converter)
         : base(type)
     {
         this.resourceManager = resourceManager;

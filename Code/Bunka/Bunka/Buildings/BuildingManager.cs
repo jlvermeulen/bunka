@@ -2,39 +2,42 @@
 using Microsoft.Xna.Framework;
 
 // all building types
-enum BuildingType { Production, Quarry, Lumberjack, Conversion, CokingPlant };
+enum BuildingType { PRODUCTION, Quarry, Lumberjack, CONVERSION, CokingPlant };
 
 // class for building administration
 class BuildingManager
 {
-    List<Building_Production> production;
-    List<Building_Conversion> conversion;
+    BuildingLoader loader;
+    List<BuildingProduction> production;
+    List<BuildingConversion> conversion;
     ResourceManager resourceManager;
 
     public BuildingManager(ResourceManager resourceManager)
     {
-        production = new List<Building_Production>();
-        conversion = new List<Building_Conversion>();
+        loader = new BuildingLoader();
+        production = new List<BuildingProduction>();
+        conversion = new List<BuildingConversion>();
         this.resourceManager = resourceManager;
         Test();
+        new BuildingLoader();
     }
 
     public void Test()
     {
-        CreateProductionBuilding(BuildingType.Quarry);
-        CreateProductionBuilding(BuildingType.Lumberjack);
-        CreateProductionBuilding(BuildingType.Lumberjack);
-        CreateProductionBuilding(BuildingType.Lumberjack);
-        CreateConversionBuilding(BuildingType.CokingPlant);
+        CreateBuilding(BuildingType.Quarry);
+        CreateBuilding(BuildingType.Lumberjack);
+        CreateBuilding(BuildingType.Lumberjack);
+        CreateBuilding(BuildingType.Lumberjack);
+        CreateBuilding(BuildingType.CokingPlant);
     }
 
     public void Update(GameTime t)
     {
-        foreach (Building_Production p in production)
+        foreach (BuildingProduction p in production)
         {
             p.Update(t);
         }
-        foreach (Building_Conversion c in conversion)
+        foreach (BuildingConversion c in conversion)
         {
             c.Update(t);
         }
@@ -44,31 +47,14 @@ class BuildingManager
     //   METHODS    //
     //////////////////
 
-    public void CreateProductionBuilding(BuildingType type)
+    public void CreateBuilding(BuildingType type)
     {
-        switch (type)
-        {
-            case BuildingType.Lumberjack:
-                production.Add(new Building_Production_Lumberjack(resourceManager));
-                break;
-            case BuildingType.Quarry:
-                production.Add(new Building_Production_Quarry(resourceManager));
-                break;
-            default:
-                break;
-        }
-    }
+        Building building = loader.CreateBuilding(type, resourceManager);
 
-    public void CreateConversionBuilding(BuildingType type)
-    {
-        switch (type)
-        {
-            case BuildingType.CokingPlant:
-                conversion.Add(new Building_Conversion_CokingPlant(resourceManager));
-                break;
-            default:
-                break;
-        }
+        if (type > BuildingType.CONVERSION)
+            conversion.Add((BuildingConversion)building);
+        else
+            production.Add((BuildingProduction)building);
     }
 
     //////////////////

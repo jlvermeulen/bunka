@@ -1,0 +1,4 @@
+Type = Lumberjack
+Produces = Wood
+Amount = 1
+Speed = 5

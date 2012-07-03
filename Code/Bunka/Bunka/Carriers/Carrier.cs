@@ -22,10 +22,10 @@ class Carrier
             if (true)
             {
                 // check if building is a conversion building
-                if (destination.BuildingType > BuildingType.Conversion)
+                if (destination.BuildingType > BuildingType.CONVERSION)
                 {
                     // add amount to appropriate resource
-                    Building_Conversion b = (Building_Conversion)destination;
+                    BuildingConversion b = (BuildingConversion)destination;
                     foreach (Resource r in b.ResourceConverter.Input)
                         if (r.ResourceType == resourceType)
                         {
