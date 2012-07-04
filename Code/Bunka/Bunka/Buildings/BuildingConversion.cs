@@ -14,6 +14,7 @@ class BuildingConversion : Building
         this.resourceManager = resourceManager;
         this.converter = converter;
         requestedResources = new List<ResourceType>();
+        InitialiseConverters();
     }
 
     public void Update(GameTime t)

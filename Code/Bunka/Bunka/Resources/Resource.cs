@@ -1,5 +1,5 @@
-﻿// parent class for all resources
-abstract class Resource
+﻿// class for all resources
+class Resource
 {
     ResourceManager resourceManager;
     ResourceType type;
@@ -37,9 +37,7 @@ abstract class Resource
             // update amount and resource count
             uint diff = value - amount;
             amount = value;
-            uint total;
-            resourceManager.ResourceCounts.TryGetValue(type, out total);
-            resourceManager.ResourceCounts[type] = total + diff;
+            resourceManager.ResourceCounts[type] += diff;
         }
     }
 

@@ -1,0 +1,6 @@
+Type = IronSmelter
+Produces = IronBar
+Amount = 1
+Consumes = IronOre,Coal
+Amount = 1,2
+Speed = 10

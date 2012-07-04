@@ -3,4 +3,4 @@ Produces = Coal
 Amount = 1
 Consumes = Wood
 Amount = 3
-Speed = 5
+Speed = 10

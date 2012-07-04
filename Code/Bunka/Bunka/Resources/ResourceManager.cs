@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 // all resource types
-enum ResourceType { Wood, Stone, Coal, None }
+enum ResourceType { Wood, Stone, Coal, Fish, IronOre, IronBar, Planks, None }
 
 // class for resource administration
 class ResourceManager
@@ -52,28 +52,8 @@ class ResourceManager
 
     public Resource CreateResource(ResourceType type, uint amount = 0)
     {
-        Resource resource = null;
-        switch (type)
-        {
-            case ResourceType.None:
-                resource = new Resource_None(this);
-                resources.Add(resource);
-                break;
-            case ResourceType.Stone:
-                resource = new Resource_Stone(this, amount);
-                resources.Add(resource);
-                break;
-            case ResourceType.Wood:
-                resource = new Resource_Wood(this, amount);
-                resources.Add(resource);
-                break;
-            case ResourceType.Coal:
-                resource = new Resource_Coal(this, amount);
-                resources.Add(resource);
-                break;
-            default:
-                break;
-        }
+        Resource resource = new Resource(this, type, amount);
+        resources.Add(resource);
         return resource;
     }
 

@@ -40,6 +40,36 @@
       <Name>CokingPlant</Name>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Buildings\Production\Fishery.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Fishery</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Buildings\Production\CoalMine.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>CoalMine</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Buildings\Production\IronMine.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>IronMine</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Buildings\Conversion\IronSmelter.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>IronSmelter</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Buildings\Conversion\Sawmill.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>Sawmill</Name>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

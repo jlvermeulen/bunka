@@ -1,0 +1,6 @@
+Type = Sawmill
+Produces = Planks
+Amount = 1
+Consumes = Wood
+Amount = 1
+Speed = 10

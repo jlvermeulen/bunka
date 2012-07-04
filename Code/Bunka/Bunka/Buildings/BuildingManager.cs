@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 
 // all building types
-enum BuildingType { PRODUCTION, Quarry, Lumberjack, CONVERSION, CokingPlant };
+enum BuildingType { PRODUCTION, Quarry, Lumberjack, CoalMine, IronMine, Fishery, CONVERSION, CokingPlant, Sawmill, IronSmelter };
 
 // class for building administration
 class BuildingManager
@@ -29,6 +29,11 @@ class BuildingManager
         CreateBuilding(BuildingType.Lumberjack);
         CreateBuilding(BuildingType.Lumberjack);
         CreateBuilding(BuildingType.CokingPlant);
+        CreateBuilding(BuildingType.CoalMine);
+        CreateBuilding(BuildingType.Fishery);
+        CreateBuilding(BuildingType.IronMine);
+        CreateBuilding(BuildingType.Sawmill);
+        CreateBuilding(BuildingType.IronSmelter);
     }
 
     public void Update(GameTime t)

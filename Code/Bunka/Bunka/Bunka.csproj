@@ -91,7 +91,6 @@
     <Compile Include="Resources\ResourceConverter.cs" />
     <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Resources\ResourceProducer.cs" />
-    <Compile Include="Resources\ResourceTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

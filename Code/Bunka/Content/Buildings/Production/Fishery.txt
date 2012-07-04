@@ -1,0 +1,4 @@
+Type = Fishery
+Produces = Fish
+Amount = 1
+Speed = 5

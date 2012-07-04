@@ -1,0 +1,4 @@
+Type = IronMine
+Produces = IronOre
+Amount = 1
+Speed = 5
