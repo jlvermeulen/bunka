@@ -2,3 +2,6 @@ Type = CoalMine
 Produces = Coal
 Amount = 1
 Speed = 5
+BuildTime = 10
+CostTypes = Wood,Stone
+CostAmounts = 5,5

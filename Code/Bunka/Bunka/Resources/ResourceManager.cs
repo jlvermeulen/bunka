@@ -22,16 +22,22 @@ class ResourceManager
         producers = new List<ResourceProducer>();
         resourceCounts = new Dictionary<ResourceType, uint>();
         freeResources = new Dictionary<ResourceType, LinkedList<Resource>>();
+
+        LinkedList<Resource> herp = new LinkedList<Resource>();
+        herp.AddFirst(new Resource(this, ResourceType.Wood, 10));
+        freeResources.Add(ResourceType.Wood, herp);
+
+        LinkedList<Resource> derp = new LinkedList<Resource>();
+        derp.AddFirst(new Resource(this, ResourceType.Stone, 10));
+        freeResources.Add(ResourceType.Stone, derp);
     }
 
     public void Update(GameTime t)
     {
         // test
         Console.Clear();
-        for (int i = 0; i < resourceCounts.Count; i++)
-        {
-            Console.WriteLine((ResourceType)i + "\t | \t" + resourceCounts[(ResourceType)i]);
-        }
+        foreach (KeyValuePair<ResourceType, uint> pair in resourceCounts)
+            Console.WriteLine(pair.Key + "\t | \t" + pair.Value);
     }
 
     //////////////////

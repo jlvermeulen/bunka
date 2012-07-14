@@ -4,3 +4,6 @@ Amount = 1
 Consumes = Wood
 Amount = 1
 Speed = 10
+BuildTime = 10
+CostTypes = Wood,IronBar
+CostAmounts = 5,1

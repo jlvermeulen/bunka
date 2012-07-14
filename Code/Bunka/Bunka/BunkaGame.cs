@@ -6,12 +6,14 @@ class BunkaGame
 {
     ResourceManager resourceManager;
     BuildingManager buildingManager;
+    ConstructionManager constructionManager;
     CarrierManager carrierManager;
 
     public BunkaGame()
     {
         resourceManager = new ResourceManager();
         buildingManager = new BuildingManager(resourceManager);
+        constructionManager = new ConstructionManager(resourceManager, buildingManager);
         carrierManager = new CarrierManager(resourceManager, buildingManager);
         resourceManager.CarrierManager = carrierManager;
     }
@@ -20,6 +22,7 @@ class BunkaGame
     {
         resourceManager.Update(t);
         buildingManager.Update(t);
+        constructionManager.Update(t);
         carrierManager.Update(t);
     }
 

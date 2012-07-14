@@ -4,3 +4,6 @@ Amount = 1
 Consumes = IronOre,Coal
 Amount = 1,2
 Speed = 10
+BuildTime = 10
+CostTypes = Stone
+CostAmounts = 10

@@ -23,19 +23,16 @@ class Carrier
             {
                 // check if building is a conversion building
                 if (destination.BuildingType > BuildingType.CONVERSION)
-                {
-                    // add amount to appropriate resource
-                    BuildingConversion b = (BuildingConversion)destination;
-                    foreach (Resource r in b.ResourceConverter.Input)
-                        if (r.ResourceType == resourceType)
-                        {
-                            b.DeliverResource(resourceType);
-                            r.Amount += amount;
-                            amount = 0;
-                            destination = null;
-                            resourceType = ResourceType.None;
-                        }
-                }
+                    ((BuildingConversion)destination).DeliverResource(resourceType, amount);
+                // otherwise it is a construction building
+                else
+                    ((ConstructionBuilding)destination).DeliverResource(resourceType, amount);
+
+                // reset carrier members
+                amount = 0;
+                destination = null;
+                resourceType = ResourceType.None;
+
                 // request moving to idle carriers list
                 carrierManager.MoveToIdle(this);
             }

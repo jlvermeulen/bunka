@@ -4,3 +4,6 @@ Amount = 1
 Consumes = Wood
 Amount = 3
 Speed = 10
+BuildTime = 10
+CostTypes = Stone
+CostAmounts = 10

@@ -6,14 +6,14 @@ class BuildingConversion : Building
 {
     ResourceManager resourceManager;
     ResourceConverter converter;
-    List<ResourceType> requestedResources;
+    Dictionary<ResourceType, uint> requestedResources;
 
     public BuildingConversion(BuildingType type, ResourceManager resourceManager, ResourceConverter converter)
         : base(type)
     {
         this.resourceManager = resourceManager;
         this.converter = converter;
-        requestedResources = new List<ResourceType>();
+        requestedResources = new Dictionary<ResourceType, uint>();
         InitialiseConverters();
     }
 
@@ -21,10 +21,10 @@ class BuildingConversion : Building
     {
         for (int i = 0; i < converter.Input.Length; i++)
         {
-            if (converter.Input[i].Amount < converter.InputSize[i] && !requestedResources.Contains(converter.Input[i].ResourceType))
+            if (converter.Input[i].Amount < converter.InputSize[i] && !requestedResources.ContainsKey(converter.Input[i].ResourceType))
             {
                 resourceManager.RequestResource(converter.InputTypes[i], converter.InputSize[i] - converter.Input[i].Amount, this);
-                requestedResources.Add(converter.Input[i].ResourceType);
+                requestedResources.Add(converter.Input[i].ResourceType, converter.InputSize[i] - converter.Input[i].Amount);
             }
         }
         converter.Update(t);
@@ -34,9 +34,22 @@ class BuildingConversion : Building
     //   METHODS    //
     //////////////////
 
-    public void DeliverResource(ResourceType type)
+    public void DeliverResource(ResourceType type, uint amount)
     {
-        requestedResources.Remove(type);
+        // update requested resources
+        uint curr = requestedResources[type];
+        if (amount >= curr)
+            requestedResources.Remove(type);
+        else
+            requestedResources[type] = curr - amount;
+
+        // deliver resource
+        foreach (Resource r in converter.Input)
+            if (r.ResourceType == type)
+            {
+                r.Amount += amount;
+                break;
+            }
     }
 
     void InitialiseConverters()

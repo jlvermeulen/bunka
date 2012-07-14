@@ -19,20 +19,14 @@ class CarrierManager
         this.busyCarriers = new List<Carrier>();
         this.moveToIdle = new LinkedList<Carrier>();
         this.requests = new LinkedList<CarryRequest>();
-        Test();
-    }
 
-    void Test()
-    {
-        Carrier c = new Carrier(this);
-        idleCarriers.Add(c);
-        carriers.Add(c);
+        CreateCarrier();
     }
 
     public void Update(GameTime t)
     {
         // update busy carriers
-        foreach (Carrier c in busyCarriers)
+        foreach (Carrier c in carriers)
             c.Update(t);
 
         // move finished carriers to idle list
@@ -55,9 +49,10 @@ class CarrierManager
             LinkedListNode<CarryRequest> node = requests.First;
 
             // check if carrier is available and if there is still a request
-            while (idleCarriers.Count != 0 && node != null)
+            while (idleCarriers.Count > 0 && node != null)
             {
                 // retrieve list of free resources of the desired type
+                // TODO: determine which resource is the closest to the destination
                 LinkedList<Resource> list;
                 if (resourceManager.FreeResources.TryGetValue(node.Value.ResourceType, out list))
                 {
@@ -68,10 +63,11 @@ class CarrierManager
                     bool broken = false;
                     foreach (Resource r in list)
                     {
-                        // check if amount meets request
+                        // check if resource is not empty
                         if (r.Amount > 0)
                         {
                             // give resource to carrier
+                            // TODO: determine closest carrier
                             idleCarriers[0].Carrying = node.Value.ResourceType;
                             idleCarriers[0].Destination = node.Value.Destination;
 
@@ -107,6 +103,8 @@ class CarrierManager
                     if (!broken)
                         node = node.Next;
                 }
+                else
+                    node = node.Next;
             }
         }
     }
@@ -125,21 +123,11 @@ class CarrierManager
 
     public void RequestCarrier(CarryRequest request)
     {
-        // add request at the end of the linked list
         requests.AddLast(request);
     }
 
     public void MoveToIdle(Carrier carrier)
     {
         moveToIdle.AddLast(carrier);
-    }
-
-    //////////////////
-    //  PROPERTIES  //
-    //////////////////
-
-    public int CarrierCount
-    {
-        get { return carriers.Count; }
     }
 }

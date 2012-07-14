@@ -1,1 +1,8 @@
 Welcome to the Bunka git repository! This is our main repository for the development of Bunka, a city/civilisation building simulator. More information will follow later.
+
+We currently have:
+
+- Resources classes, which represent an amount of a resource at a specific place
+- Carriers for moving resources around
+- Building that produce or convert resources
+- Builders that construct buildings

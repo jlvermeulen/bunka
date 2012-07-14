@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 
 // all building types
-enum BuildingType { PRODUCTION, Quarry, Lumberjack, CoalMine, IronMine, Fishery, CONVERSION, CokingPlant, Sawmill, IronSmelter };
+enum BuildingType { Construction, PRODUCTION, Quarry, Lumberjack, CoalMine, IronMine, Fishery, CONVERSION, CokingPlant, Sawmill, IronSmelter };
 
 // class for building administration
 class BuildingManager
@@ -18,8 +18,7 @@ class BuildingManager
         production = new List<BuildingProduction>();
         conversion = new List<BuildingConversion>();
         this.resourceManager = resourceManager;
-        Test();
-        new BuildingLoader();
+        // Test();
     }
 
     public void Test()
@@ -66,8 +65,8 @@ class BuildingManager
     //  PROPERTIES  //
     //////////////////
 
-    public List<Building> Buildings
+    public BuildingLoader BuildingLoader
     {
-        get { return null; }
+        get { return loader; }
     }
 }

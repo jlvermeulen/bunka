@@ -2,3 +2,6 @@ Type = IronMine
 Produces = IronOre
 Amount = 1
 Speed = 5
+BuildTime = 10
+CostTypes = Wood,Stone
+CostAmounts = 5,5

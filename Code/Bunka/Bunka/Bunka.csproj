@@ -84,6 +84,12 @@
     <Compile Include="Carriers\Carrier.cs" />
     <Compile Include="Carriers\CarrierManager.cs" />
     <Compile Include="Carriers\CarryRequest.cs" />
+    <Compile Include="Construction\Builder.cs" />
+    <Compile Include="Construction\BuildRequest.cs" />
+    <Compile Include="Construction\ConstructionBuilding.cs" />
+    <Compile Include="Construction\ConstructionManager.cs" />
+    <Compile Include="Construction\ConstructionHandler.cs" />
+    <Compile Include="Construction\ConstructionRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Bunka.cs" />

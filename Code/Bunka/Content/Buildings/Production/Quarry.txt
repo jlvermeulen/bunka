@@ -2,3 +2,6 @@ Type = Quarry
 Produces = Stone
 Amount = 1
 Speed = 5
+BuildTime = 10
+CostTypes = Stone
+CostAmounts = 5
