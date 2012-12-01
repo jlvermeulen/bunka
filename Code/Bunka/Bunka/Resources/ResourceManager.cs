@@ -8,15 +8,18 @@ enum ResourceType { Wood, Stone, Coal, Fish, IronOre, IronBar, Planks, None }
 // class for resource administration
 class ResourceManager
 {
-    CarrierManager carrierManager;
+    BunkaGame game;
+
     List<Resource> resources;
     List<ResourceConverter> converters;
     List<ResourceProducer> producers;
     Dictionary<ResourceType, uint> resourceCounts;
     Dictionary<ResourceType, LinkedList<Resource>> freeResources;
 
-    public ResourceManager()
+    public ResourceManager(BunkaGame game)
     {
+        this.game = game;
+
         resources = new List<Resource>();
         converters = new List<ResourceConverter>();
         producers = new List<ResourceProducer>();
@@ -46,7 +49,7 @@ class ResourceManager
 
     public void RequestResource(ResourceType type, uint amount, Building destination)
     {
-        carrierManager.RequestCarrier(new CarryRequest(type, amount, destination));
+        game.CarrierManager.RequestCarrier(new CarryRequest(type, amount, destination));
     }
 
     public uint ResourceCount(ResourceType type)
@@ -98,10 +101,5 @@ class ResourceManager
     public Dictionary<ResourceType, LinkedList<Resource>> FreeResources
     {
         get { return freeResources; }
-    }
-
-    public CarrierManager CarrierManager
-    {
-        set { carrierManager = value; }
     }
 }

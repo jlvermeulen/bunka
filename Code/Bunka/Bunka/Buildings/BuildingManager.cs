@@ -7,17 +7,19 @@ enum BuildingType { Construction, PRODUCTION, Quarry, Lumberjack, CoalMine, Iron
 // class for building administration
 class BuildingManager
 {
+    BunkaGame game;
+
     BuildingLoader loader;
     List<BuildingProduction> production;
     List<BuildingConversion> conversion;
-    ResourceManager resourceManager;
 
-    public BuildingManager(ResourceManager resourceManager)
+    public BuildingManager(BunkaGame game)
     {
+        this.game = game;
+
         loader = new BuildingLoader();
         production = new List<BuildingProduction>();
         conversion = new List<BuildingConversion>();
-        this.resourceManager = resourceManager;
         // Test();
     }
 
@@ -53,7 +55,7 @@ class BuildingManager
 
     public void CreateBuilding(BuildingType type)
     {
-        Building building = loader.CreateBuilding(type, resourceManager);
+        Building building = loader.CreateBuilding(type, game.ResourceManager);
 
         if (type > BuildingType.CONVERSION)
             conversion.Add((BuildingConversion)building);

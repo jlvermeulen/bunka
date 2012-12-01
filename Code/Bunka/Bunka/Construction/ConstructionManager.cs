@@ -4,8 +4,7 @@ using Microsoft.Xna.Framework;
 // class for managing construction of buildings
 class ConstructionManager
 {
-    ResourceManager resourceManager;
-    BuildingManager buildingManager;
+    BunkaGame game;
 
     LinkedList<ConstructionRequest> constructionRequests;
     List<ConstructionHandler> collect, build;
@@ -13,10 +12,9 @@ class ConstructionManager
     LinkedList<Builder> moveToIdle;
     List<Builder> builders, idleBuilders, busyBuilders;
 
-    public ConstructionManager(ResourceManager resourceManager, BuildingManager buildingManager)
+    public ConstructionManager(BunkaGame game)
     {
-        this.resourceManager = resourceManager;
-        this.buildingManager = buildingManager;
+        this.game = game;
 
         constructionRequests = new LinkedList<ConstructionRequest>();
         collect = new List<ConstructionHandler>();
@@ -28,7 +26,7 @@ class ConstructionManager
         busyBuilders = new List<Builder>();
 
         CreateBuilder();
-        Test();
+        //Test();
     }
 
     void Test()
@@ -64,7 +62,7 @@ class ConstructionManager
             LinkedListNode<ConstructionRequest> node = constructionRequests.First;
             while (node != null)
             {
-                collect.Add(buildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType, resourceManager));
+                collect.Add(game.BuildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType, game.ResourceManager));
                 constructionRequests.Remove(node);
                 node = constructionRequests.First;
             }
@@ -129,6 +127,7 @@ class ConstructionManager
     public void CompleteConstruction(ConstructionBuilding location)
     {
         build.Remove(location.ConstructionHandler);
-        buildingManager.CreateBuilding(location.ConstructionHandler.BuildingType);
+        game.BuildingManager.CreateBuilding(location.ConstructionHandler.BuildingType);
+        System.Console.WriteLine("Built {0}", location.ConstructionHandler.BuildingType.ToString());
     }
 }
