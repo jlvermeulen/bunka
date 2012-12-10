@@ -1,17 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 
 // class for converting one resource into another
-class ResourceConverter
+public class ResourceConverter
 {
-    ResourceManager resourceManager;
     Resource[] input, output;
     ResourceType[] inputTypes, outputTypes;
     float speed, timer;
     byte[] inSize, outSize;
 
-    public ResourceConverter(ResourceManager resourceManager, ResourceType[] inputTypes, ResourceType[] outputTypes, byte[] inSize, byte[] outSize, float speed)
+    public ResourceConverter(ResourceType[] inputTypes, ResourceType[] outputTypes, byte[] inSize, byte[] outSize, float speed)
     {
-        this.resourceManager = resourceManager;
         this.inputTypes = inputTypes;
         this.outputTypes = outputTypes;
         this.inSize = inSize;
@@ -21,9 +19,9 @@ class ResourceConverter
         this.output = new Resource[outputTypes.Length];
 
         for (int i = 0; i < input.Length; i++)
-            input[i] = resourceManager.CreateResource(inputTypes[i]);
+            input[i] = BunkaGame.ResourceManager.CreateResource(inputTypes[i]);
         for (int i = 0; i < output.Length; i++)
-            output[i] = resourceManager.CreateResource(outputTypes[i]);
+            output[i] = BunkaGame.ResourceManager.CreateResource(outputTypes[i]);
     }
 
     public void Update(GameTime t)

@@ -1,21 +1,19 @@
 ﻿// class for all resources
-class Resource
+public class Resource
 {
-    ResourceManager resourceManager;
     ResourceType type;
     uint amount;
     Building location;
 
-    public Resource(ResourceManager resourceManager, ResourceType type, uint amount)
+    public Resource(ResourceType type, uint amount)
     {
         // add amount to resource count or create resource count if it is the first resource of its kind
         uint a;
-        if (resourceManager.ResourceCounts.TryGetValue(type, out a))
-            resourceManager.ResourceCounts[type] = a + amount;
+        if (BunkaGame.ResourceManager.ResourceCounts.TryGetValue(type, out a))
+            BunkaGame.ResourceManager.ResourceCounts[type] = a + amount;
         else
-            resourceManager.ResourceCounts.Add(type, amount);
+            BunkaGame.ResourceManager.ResourceCounts.Add(type, amount);
 
-        this.resourceManager = resourceManager;
         this.type = type;
         this.amount = amount;
     }
@@ -37,7 +35,7 @@ class Resource
             // update amount and resource count
             uint diff = value - amount;
             amount = value;
-            resourceManager.ResourceCounts[type] += diff;
+            BunkaGame.ResourceManager.ResourceCounts[type] += diff;
         }
     }
 

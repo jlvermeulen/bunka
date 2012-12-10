@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-class InputManager
+public class InputManager
 {
     KeyboardState keyState, prevKeyState;
     MouseState mouseState, prevMouseState;

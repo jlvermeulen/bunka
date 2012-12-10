@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-class ConstructionBuilding : Building
+public class ConstructionBuilding : Building
 {
     ConstructionHandler handler;
     Dictionary<ResourceType, uint> costs;

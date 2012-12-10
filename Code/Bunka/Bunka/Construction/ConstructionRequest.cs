@@ -1,4 +1,4 @@
-﻿struct ConstructionRequest
+﻿public struct ConstructionRequest
 {
     BuildingType type;
 

@@ -2,18 +2,14 @@
 using Microsoft.Xna.Framework;
 
 // class for carrier administration
-class CarrierManager
+public class CarrierManager
 {
-    BunkaGame game;
-
     List<Carrier> carriers, idleCarriers, busyCarriers;
     LinkedList<Carrier> moveToIdle;
     LinkedList<CarryRequest> requests;
 
-    public CarrierManager(BunkaGame game)
+    public CarrierManager()
     {
-        this.game = game;
-
         this.carriers = new List<Carrier>();
         this.idleCarriers = new List<Carrier>();
         this.busyCarriers = new List<Carrier>();
@@ -54,7 +50,7 @@ class CarrierManager
                 // retrieve list of free resources of the desired type
                 // TODO: determine which resource is the closest to the destination
                 LinkedList<Resource> list;
-                if (game.ResourceManager.FreeResources.TryGetValue(node.Value.ResourceType, out list))
+                if (BunkaGame.ResourceManager.FreeResources.TryGetValue(node.Value.ResourceType, out list))
                 {
                     // skip if list is empty
                     if (list.Count == 0)
@@ -115,7 +111,7 @@ class CarrierManager
 
     public Carrier CreateCarrier()
     {
-        Carrier temp = new Carrier(this);
+        Carrier temp = new Carrier();
         carriers.Add(temp);
         idleCarriers.Add(temp);
         return temp;

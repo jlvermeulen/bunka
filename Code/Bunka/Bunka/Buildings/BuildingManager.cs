@@ -2,21 +2,17 @@
 using Microsoft.Xna.Framework;
 
 // all building types
-enum BuildingType { Construction, PRODUCTION, Quarry, Lumberjack, CoalMine, IronMine, Fishery, CONVERSION, CokingPlant, Sawmill, IronSmelter };
+public enum BuildingType { Construction, PRODUCTION, Quarry, Lumberjack, CoalMine, IronMine, Fishery, CONVERSION, CokingPlant, Sawmill, IronSmelter };
 
 // class for building administration
-class BuildingManager
+public class BuildingManager
 {
-    BunkaGame game;
-
     BuildingLoader loader;
     List<BuildingProduction> production;
     List<BuildingConversion> conversion;
 
-    public BuildingManager(BunkaGame game)
+    public BuildingManager()
     {
-        this.game = game;
-
         loader = new BuildingLoader();
         production = new List<BuildingProduction>();
         conversion = new List<BuildingConversion>();
@@ -55,7 +51,7 @@ class BuildingManager
 
     public void CreateBuilding(BuildingType type)
     {
-        Building building = loader.CreateBuilding(type, game.ResourceManager);
+        Building building = loader.CreateBuilding(type);
 
         if (type > BuildingType.CONVERSION)
             conversion.Add((BuildingConversion)building);

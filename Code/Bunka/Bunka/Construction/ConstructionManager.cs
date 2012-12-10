@@ -2,20 +2,16 @@
 using Microsoft.Xna.Framework;
 
 // class for managing construction of buildings
-class ConstructionManager
+public class ConstructionManager
 {
-    BunkaGame game;
-
     LinkedList<ConstructionRequest> constructionRequests;
     List<ConstructionHandler> collect, build;
     LinkedList<BuildRequest> buildRequests;
     LinkedList<Builder> moveToIdle;
     List<Builder> builders, idleBuilders, busyBuilders;
 
-    public ConstructionManager(BunkaGame game)
+    public ConstructionManager()
     {
-        this.game = game;
-
         constructionRequests = new LinkedList<ConstructionRequest>();
         collect = new List<ConstructionHandler>();
         build = new List<ConstructionHandler>();
@@ -26,10 +22,9 @@ class ConstructionManager
         busyBuilders = new List<Builder>();
 
         CreateBuilder();
-        //Test();
     }
 
-    void Test()
+    public void AddInitialConstruction()
     {
         ConstructBuilding(BuildingType.Lumberjack);
         ConstructBuilding(BuildingType.Quarry);
@@ -62,7 +57,7 @@ class ConstructionManager
             LinkedListNode<ConstructionRequest> node = constructionRequests.First;
             while (node != null)
             {
-                collect.Add(game.BuildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType, game.ResourceManager));
+                collect.Add(BunkaGame.BuildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType));
                 constructionRequests.Remove(node);
                 node = constructionRequests.First;
             }
@@ -108,7 +103,7 @@ class ConstructionManager
 
     public Builder CreateBuilder()
     {
-        Builder temp = new Builder(this);
+        Builder temp = new Builder();
         builders.Add(temp);
         idleBuilders.Add(temp);
         return temp;
@@ -127,7 +122,7 @@ class ConstructionManager
     public void CompleteConstruction(ConstructionBuilding location)
     {
         build.Remove(location.ConstructionHandler);
-        game.BuildingManager.CreateBuilding(location.ConstructionHandler.BuildingType);
+        BunkaGame.BuildingManager.CreateBuilding(location.ConstructionHandler.BuildingType);
         System.Console.WriteLine("Built {0}", location.ConstructionHandler.BuildingType.ToString());
     }
 }

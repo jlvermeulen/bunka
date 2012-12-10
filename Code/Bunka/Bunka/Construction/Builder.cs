@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 
-class Builder
+public class Builder
 {
-    ConstructionManager constructionManager;
     ConstructionBuilding target;
-
-    public Builder(ConstructionManager constructionManager)
-    {
-        this.constructionManager = constructionManager;
-    }
 
     public void Update(GameTime t)
     {
@@ -22,10 +16,10 @@ class Builder
                 if (target.ConstructionTime <= 0)
                 {
                     // request moving to idle list
-                    constructionManager.MoveToIdle(this);
+                    BunkaGame.ConstructionManager.MoveToIdle(this);
 
                     // signal that construction is finished
-                    constructionManager.CompleteConstruction(target);
+                    BunkaGame.ConstructionManager.CompleteConstruction(target);
 
                     // reset target
                     target = null;

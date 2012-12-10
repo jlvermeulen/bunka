@@ -2,16 +2,14 @@
 using Microsoft.Xna.Framework;
 
 // parent class for buildings that convert resources
-class BuildingConversion : Building
+public class BuildingConversion : Building
 {
-    ResourceManager resourceManager;
     ResourceConverter converter;
     Dictionary<ResourceType, uint> requestedResources;
 
-    public BuildingConversion(BuildingType type, ResourceManager resourceManager, ResourceConverter converter)
+    public BuildingConversion(BuildingType type, ResourceConverter converter)
         : base(type)
     {
-        this.resourceManager = resourceManager;
         this.converter = converter;
         requestedResources = new Dictionary<ResourceType, uint>();
         InitialiseConverters();
@@ -23,7 +21,7 @@ class BuildingConversion : Building
         {
             if (converter.Input[i].Amount < converter.InputSize[i] && !requestedResources.ContainsKey(converter.Input[i].ResourceType))
             {
-                resourceManager.RequestResource(converter.InputTypes[i], converter.InputSize[i] - converter.Input[i].Amount, this);
+                BunkaGame.ResourceManager.RequestResource(converter.InputTypes[i], converter.InputSize[i] - converter.Input[i].Amount, this);
                 requestedResources.Add(converter.Input[i].ResourceType, converter.InputSize[i] - converter.Input[i].Amount);
             }
         }
@@ -63,13 +61,13 @@ class BuildingConversion : Building
 
             // add to free resources, create new entry for resource if necessary
             LinkedList<Resource> list;
-            if (resourceManager.FreeResources.TryGetValue(converter.OutputTypes[i], out list))
+            if (BunkaGame.ResourceManager.FreeResources.TryGetValue(converter.OutputTypes[i], out list))
                 list.AddFirst(converter.Output[i]);
             else
             {
                 list = new LinkedList<Resource>();
                 list.AddFirst(converter.Output[i]);
-                resourceManager.FreeResources.Add(converter.OutputTypes[i], list);
+                BunkaGame.ResourceManager.FreeResources.Add(converter.OutputTypes[i], list);
             }
         }
     }

@@ -1,21 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 
 // class for producing resources
-class ResourceProducer
+public class ResourceProducer
 {
-    ResourceManager resourceManager;
     Resource output;
     ResourceType type;
     uint amount;
     float speed, timer;
 
-    public ResourceProducer(ResourceManager resourceManager, ResourceType type, uint amount, float speed)
+    public ResourceProducer(ResourceType type, uint amount, float speed)
     {
-        this.resourceManager = resourceManager;
         this.type = type;
         this.amount = amount;
         this.speed = this.timer = speed;
-        this.output = resourceManager.CreateResource(type);
+        this.output = BunkaGame.ResourceManager.CreateResource(type);
     }
 
     public void Update(GameTime t)

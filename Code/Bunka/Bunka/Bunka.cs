@@ -6,13 +6,13 @@ public class Bunka : Game
 {
     GraphicsDeviceManager graphics;
     SpriteBatch spriteBatch;
-    BunkaGame currentGame;
 
     public Bunka()
     {
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
-        currentGame = new BunkaGame();
+        BunkaGame.ResourceManager.AddInitialResources();
+        BunkaGame.ConstructionManager.AddInitialConstruction();
     }
 
     protected override void Initialize()
@@ -27,14 +27,14 @@ public class Bunka : Game
 
     protected override void Update(GameTime t)
     {
-        currentGame.Update(t);
+        BunkaGame.Update(t);
         base.Update(t);
     }
 
     protected override void Draw(GameTime t)
     {
         GraphicsDevice.Clear(Color.Black);
-        currentGame.Draw(spriteBatch);
+        BunkaGame.Draw(spriteBatch);
         base.Draw(t);
     }
 }

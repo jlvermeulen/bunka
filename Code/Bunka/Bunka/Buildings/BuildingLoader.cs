@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-class BuildingLoader
+public class BuildingLoader
 {
     Dictionary<BuildingType, List<string[]>> buildings;
 
@@ -43,7 +43,7 @@ class BuildingLoader
     }
 
     // create a constructionhandler for a specific building
-    public ConstructionHandler CreateConstructionRequest(BuildingType type, ResourceManager resourceManager)
+    public ConstructionHandler CreateConstructionRequest(BuildingType type)
     {
         List<string[]> building = buildings[type];
 
@@ -65,22 +65,22 @@ class BuildingLoader
             costAmounts[i] = uint.Parse(iAmounts[i]);
 
         // create construction request
-        return new ConstructionHandler(type, costTypes, costAmounts, constructionTime, resourceManager);
+        return new ConstructionHandler(type, costTypes, costAmounts, constructionTime);
     }
 
     // create a building object of a specific type
-    public Building CreateBuilding(BuildingType type, ResourceManager resourceManager)
+    public Building CreateBuilding(BuildingType type)
     {
         if (type > BuildingType.CONVERSION)
-            return CreateConversionBuilding(type, resourceManager);
+            return CreateConversionBuilding(type);
         else if (type > BuildingType.PRODUCTION)
-            return CreateProductionBuilding(type, resourceManager);
+            return CreateProductionBuilding(type);
         else 
             return null;
     }
 
     // method for creating conversion buildings
-    BuildingConversion CreateConversionBuilding(BuildingType type, ResourceManager resourceManager)
+    BuildingConversion CreateConversionBuilding(BuildingType type)
     {
         // stats for current building
         List<string[]> building = buildings[type];
@@ -112,13 +112,13 @@ class BuildingLoader
             inAmounts[i] = byte.Parse(iAmounts[i]);
 
         // create required resource converter
-        ResourceConverter converter = resourceManager.CreateResourceConverter(inTypes, outTypes, inAmounts, outAmounts, speed);
+        ResourceConverter converter = BunkaGame.ResourceManager.CreateResourceConverter(inTypes, outTypes, inAmounts, outAmounts, speed);
 
-        return new BuildingConversion(type, resourceManager, converter);
+        return new BuildingConversion(type, converter);
     }
 
     // method for creating production buildings
-    BuildingProduction CreateProductionBuilding(BuildingType type, ResourceManager resourceManager)
+    BuildingProduction CreateProductionBuilding(BuildingType type)
     {
         // stats for current building
         List<string[]> building = buildings[type];
@@ -130,9 +130,9 @@ class BuildingLoader
         // create required resource producers
         List<ResourceProducer> producers = new List<ResourceProducer>();
         for (int i = 0; i < types.Length; i++)
-            producers.Add(resourceManager.CreateResourceProducer((ResourceType)(Enum.Parse(typeof(ResourceType), types[i])), uint.Parse(amounts[i]), speed));
+            producers.Add(BunkaGame.ResourceManager.CreateResourceProducer((ResourceType)(Enum.Parse(typeof(ResourceType), types[i])), uint.Parse(amounts[i]), speed));
 
-        return new BuildingProduction(type, resourceManager, producers.ToArray());
+        return new BuildingProduction(type, producers.ToArray());
     }
 
     List<string> LoadDirectory(string root)

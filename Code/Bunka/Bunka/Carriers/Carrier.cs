@@ -1,16 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 
 // class for resource carriers
-class Carrier
+public class Carrier
 {
-    CarrierManager carrierManager;
     ResourceType resourceType;
     Building destination;
     uint amount;
 
-    public Carrier(CarrierManager carrierManager)
+    public Carrier()
     {
-        this.carrierManager = carrierManager;
         resourceType = ResourceType.None;
     }
 
@@ -34,7 +32,7 @@ class Carrier
                 resourceType = ResourceType.None;
 
                 // request moving to idle carriers list
-                carrierManager.MoveToIdle(this);
+                BunkaGame.CarrierManager.MoveToIdle(this);
             }
         }
     }

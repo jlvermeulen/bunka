@@ -1,4 +1,4 @@
-﻿struct BuildRequest
+﻿public struct BuildRequest
 {
     ConstructionBuilding location;
 

@@ -1,5 +1,5 @@
 ﻿// parent class for all buildings
-abstract class Building
+public abstract class Building
 {
     BuildingType type;
 

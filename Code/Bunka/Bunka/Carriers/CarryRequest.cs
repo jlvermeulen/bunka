@@ -1,4 +1,4 @@
-﻿struct CarryRequest
+﻿public struct CarryRequest
 {
     ResourceType type;
     uint amount;
