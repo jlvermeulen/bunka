@@ -23,7 +23,7 @@ public class ConstructionManager
 
         CreateBuilder();
     }
-
+    /*
     public void AddInitialConstruction()
     {
         ConstructBuilding(BuildingType.Lumberjack);
@@ -32,7 +32,7 @@ public class ConstructionManager
         ConstructBuilding(BuildingType.IronMine);
         ConstructBuilding(BuildingType.IronSmelter);
     }
-
+    */
     public void Update(GameTime t)
     {
         foreach (Builder b in builders)
@@ -57,7 +57,7 @@ public class ConstructionManager
             LinkedListNode<ConstructionRequest> node = constructionRequests.First;
             while (node != null)
             {
-                collect.Add(BunkaGame.BuildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType));
+                collect.Add(BunkaGame.BuildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType, node.Value.Position));
                 constructionRequests.Remove(node);
                 node = constructionRequests.First;
             }
@@ -96,9 +96,10 @@ public class ConstructionManager
     //   METHODS    //
     //////////////////
 
-    public void ConstructBuilding(BuildingType type)
+    public void ConstructBuilding(BuildingType type, Vector2 position)
     {
-        constructionRequests.AddLast(new ConstructionRequest(type));
+        if (BunkaGame.MapManager.IsPositionOnMap(position) && BunkaGame.MapManager[position] == null)
+            constructionRequests.AddLast(new ConstructionRequest(type, position));
     }
 
     public Builder CreateBuilder()
@@ -122,7 +123,7 @@ public class ConstructionManager
     public void CompleteConstruction(ConstructionBuilding location)
     {
         build.Remove(location.ConstructionHandler);
-        BunkaGame.BuildingManager.CreateBuilding(location.ConstructionHandler.BuildingType);
+        BunkaGame.BuildingManager.CreateBuilding(location.ConstructionHandler.BuildingType, location.Position);
         System.Console.WriteLine("Built {0}", location.ConstructionHandler.BuildingType.ToString());
     }
 }

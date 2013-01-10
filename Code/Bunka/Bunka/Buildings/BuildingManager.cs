@@ -18,7 +18,7 @@ public class BuildingManager
         conversion = new List<BuildingConversion>();
         // Test();
     }
-
+    /*
     public void Test()
     {
         CreateBuilding(BuildingType.Quarry);
@@ -32,7 +32,7 @@ public class BuildingManager
         CreateBuilding(BuildingType.Sawmill);
         CreateBuilding(BuildingType.IronSmelter);
     }
-
+    */
     public void Update(GameTime t)
     {
         foreach (BuildingProduction p in production)
@@ -49,9 +49,9 @@ public class BuildingManager
     //   METHODS    //
     //////////////////
 
-    public void CreateBuilding(BuildingType type)
+    public void CreateBuilding(BuildingType type, Vector2 position)
     {
-        Building building = loader.CreateBuilding(type);
+        Building building = loader.CreateBuilding(type, position);
 
         if (type > BuildingType.CONVERSION)
             conversion.Add((BuildingConversion)building);

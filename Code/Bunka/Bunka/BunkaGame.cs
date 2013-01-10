@@ -9,6 +9,7 @@ class BunkaGameInstance
     BuildingManager buildingManager;
     ConstructionManager constructionManager;
     CarrierManager carrierManager;
+    MapManager mapManager;
 
     DebugConsole debugConsole;
 
@@ -19,6 +20,7 @@ class BunkaGameInstance
         buildingManager = new BuildingManager();
         constructionManager = new ConstructionManager();
         carrierManager = new CarrierManager();
+        mapManager = new MapManager();
         debugConsole = new DebugConsole();
     }
 
@@ -55,6 +57,11 @@ class BunkaGameInstance
     public CarrierManager CarrierManager
     {
         get { return carrierManager; }
+    }
+
+    public MapManager MapManager
+    {
+        get { return mapManager; }
     }
 
     public InputManager InputManager
@@ -95,6 +102,11 @@ public class BunkaGame
     public static CarrierManager CarrierManager
     {
         get { return instance.CarrierManager; }
+    }
+
+    public static MapManager MapManager
+    {
+        get { return instance.MapManager; }
     }
 
     public static InputManager InputManager

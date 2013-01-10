@@ -7,16 +7,16 @@ public class BuildingProduction : Building
     ResourceProducer[] producers;
 
     // overload for single producer
-    public BuildingProduction(BuildingType type, ResourceProducer producers)
-        : base(type)
+    public BuildingProduction(BuildingType type, ResourceProducer producers, Vector2 position)
+        : base(type, position)
     {
         this.producers = new ResourceProducer[] { producers };
         InitialiseProducers();
     }
 
     // overload for multiple producers
-    public BuildingProduction(BuildingType type, ResourceProducer[] producers)
-        : base(type)
+    public BuildingProduction(BuildingType type, ResourceProducer[] producers, Vector2 position)
+        : base(type, position)
     {
         this.producers = producers;
         InitialiseProducers();

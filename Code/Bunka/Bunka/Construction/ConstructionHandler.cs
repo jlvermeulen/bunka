@@ -5,9 +5,9 @@ public class ConstructionHandler
     ConstructionBuilding location;
     BuildingType type;
 
-    public ConstructionHandler(BuildingType type, ResourceType[] costTypes, uint[] costAmounts, float constructionTime)
+    public ConstructionHandler(BuildingType type, ResourceType[] costTypes, uint[] costAmounts, float constructionTime, Vector2 position)
     {
-        this.location = new ConstructionBuilding(this, costTypes, costAmounts, constructionTime);
+        this.location = new ConstructionBuilding(this, costTypes, costAmounts, constructionTime, position);
         this.type = type;
 
         // request required resources

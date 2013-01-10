@@ -7,8 +7,8 @@ public class BuildingConversion : Building
     ResourceConverter converter;
     Dictionary<ResourceType, uint> requestedResources;
 
-    public BuildingConversion(BuildingType type, ResourceConverter converter)
-        : base(type)
+    public BuildingConversion(BuildingType type, ResourceConverter converter, Vector2 position)
+        : base(type, position)
     {
         this.converter = converter;
         requestedResources = new Dictionary<ResourceType, uint>();

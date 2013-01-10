@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 
 public class BuildingLoader
 {
@@ -43,7 +44,7 @@ public class BuildingLoader
     }
 
     // create a constructionhandler for a specific building
-    public ConstructionHandler CreateConstructionRequest(BuildingType type)
+    public ConstructionHandler CreateConstructionRequest(BuildingType type, Vector2 position)
     {
         List<string[]> building = buildings[type];
 
@@ -65,22 +66,22 @@ public class BuildingLoader
             costAmounts[i] = uint.Parse(iAmounts[i]);
 
         // create construction request
-        return new ConstructionHandler(type, costTypes, costAmounts, constructionTime);
+        return new ConstructionHandler(type, costTypes, costAmounts, constructionTime, position);
     }
 
     // create a building object of a specific type
-    public Building CreateBuilding(BuildingType type)
+    public Building CreateBuilding(BuildingType type, Vector2 position)
     {
         if (type > BuildingType.CONVERSION)
-            return CreateConversionBuilding(type);
+            return CreateConversionBuilding(type, position);
         else if (type > BuildingType.PRODUCTION)
-            return CreateProductionBuilding(type);
+            return CreateProductionBuilding(type, position);
         else 
             return null;
     }
 
     // method for creating conversion buildings
-    BuildingConversion CreateConversionBuilding(BuildingType type)
+    BuildingConversion CreateConversionBuilding(BuildingType type, Vector2 position)
     {
         // stats for current building
         List<string[]> building = buildings[type];
@@ -114,11 +115,11 @@ public class BuildingLoader
         // create required resource converter
         ResourceConverter converter = BunkaGame.ResourceManager.CreateResourceConverter(inTypes, outTypes, inAmounts, outAmounts, speed);
 
-        return new BuildingConversion(type, converter);
+        return new BuildingConversion(type, converter, position);
     }
 
     // method for creating production buildings
-    BuildingProduction CreateProductionBuilding(BuildingType type)
+    BuildingProduction CreateProductionBuilding(BuildingType type, Vector2 position)
     {
         // stats for current building
         List<string[]> building = buildings[type];
@@ -132,7 +133,7 @@ public class BuildingLoader
         for (int i = 0; i < types.Length; i++)
             producers.Add(BunkaGame.ResourceManager.CreateResourceProducer((ResourceType)(Enum.Parse(typeof(ResourceType), types[i])), uint.Parse(amounts[i]), speed));
 
-        return new BuildingProduction(type, producers.ToArray());
+        return new BuildingProduction(type, producers.ToArray(), position);
     }
 
     List<string> LoadDirectory(string root)

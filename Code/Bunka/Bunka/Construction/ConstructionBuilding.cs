@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 public class ConstructionBuilding : Building
 {
@@ -6,9 +7,10 @@ public class ConstructionBuilding : Building
     Dictionary<ResourceType, uint> costs;
     float constructionTime;
 
-    public ConstructionBuilding(ConstructionHandler handler, ResourceType[] costTypes, uint[] costAmounts, float constructionTime)
-        : base(BuildingType.Construction)
+    public ConstructionBuilding(ConstructionHandler handler, ResourceType[] costTypes, uint[] costAmounts, float constructionTime, Vector2 position)
+        : base(BuildingType.Construction, position)
     {
+        BunkaGame.MapManager[position] = this;
         this.handler = handler;
         this.constructionTime = constructionTime;
         costs = new Dictionary<ResourceType, uint>();
