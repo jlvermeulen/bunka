@@ -101,6 +101,8 @@
     <Compile Include="Resources\ResourceConverter.cs" />
     <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Resources\ResourceProducer.cs" />
+    <Compile Include="Utility\CPoint.cs" />
+    <Compile Include="Utility\Heap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

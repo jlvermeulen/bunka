@@ -10,8 +10,9 @@ public class MapManager
 
     public MapManager()
     {
-        mapArray = new Building[10, 10];
+        mapArray = new Building[200, 200];
         cellSize = 10;
+        Console.SetBufferSize(201, 201);
     }
 
     //////////////////
@@ -24,7 +25,7 @@ public class MapManager
         return x < mapArray.GetLength(0) && y < mapArray.GetLength(1) && x >= 0 && y >= 0;
     }
 
-    public bool IsValidIndex(Point p)
+    public bool IsValidIndex(CPoint p)
     {
         return IsValidIndex(p.X, p.Y);
     }
@@ -44,21 +45,21 @@ public class MapManager
     }
 
     // returns the index of the cell that contains the specified position
-    public Point PositionToIndex(Vector2 pos)
+    public CPoint PositionToIndex(Vector2 pos)
     {
         if (!IsPositionOnMap(pos))
-            return new Point(-1, -1);
-        return new Point((int)(pos.X / cellSize), (int)(pos.Y / cellSize));
+            return new CPoint(-1, -1);
+        return new CPoint((int)(pos.X / cellSize), (int)(pos.Y / cellSize));
     }
 
-    public int ManhattanDistance(Point from, Point to)
+    public int ManhattanDistance(CPoint from, CPoint to)
     {
         return Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
     }
 
     public int ManhattanDistance(Vector2 from, Vector2 to)
     {
-        Point fromIndex, toIndex;
+        CPoint fromIndex, toIndex;
         fromIndex = PositionToIndex(from);
         toIndex = PositionToIndex(to);
         return Math.Abs(fromIndex.X - toIndex.X) + Math.Abs(fromIndex.Y - toIndex.Y);
@@ -74,21 +75,21 @@ public class MapManager
         return ManhattanDistance(from, to);
     }
 
-    public List<Point> Neighbours(Point cell)
+    public List<CPoint> Neighbours(CPoint cell)
     {
-        List<Point> result = new List<Point>();
-        Point[] possibles = { new Point(cell.X - 1, cell.Y), new Point(cell.X + 1, cell.Y), new Point(cell.X, cell.Y - 1), new Point(cell.X, cell.Y + 1) };
-        foreach (Point p in possibles)
+        List<CPoint> result = new List<CPoint>();
+        CPoint[] possibles = { new CPoint(cell.X - 1, cell.Y), new CPoint(cell.X + 1, cell.Y), new CPoint(cell.X, cell.Y - 1), new CPoint(cell.X, cell.Y + 1) };
+        foreach (CPoint p in possibles)
             if (IsValidIndex(p))
                 result.Add(p);
         return result;
     }
 
-    public List<Point> FreeNeighbours(Point cell)
+    public List<CPoint> FreeNeighbours(CPoint cell)
     {
-        List<Point> possibles = Neighbours(cell);
-        List<Point> result = new List<Point>();
-        foreach (Point p in possibles)
+        List<CPoint> possibles = Neighbours(cell);
+        List<CPoint> result = new List<CPoint>();
+        foreach (CPoint p in possibles)
             if (mapArray[p.X, p.Y] == null)
                 result.Add(p);
         return result;
@@ -102,12 +103,12 @@ public class MapManager
     {
         get
         {
-            Point index = PositionToIndex(pos);
+            CPoint index = PositionToIndex(pos);
             return this[index.X, index.Y];
         }
         set
         {
-            Point index = PositionToIndex(pos);
+            CPoint index = PositionToIndex(pos);
             this[index.X, index.Y] = value;
         }
     }
@@ -127,8 +128,8 @@ public class MapManager
         }
     }
 
-    public Point Dimensions
+    public CPoint Dimensions
     {
-        get { return new Point(mapArray.GetLength(0), mapArray.GetLength(1)); }
+        get { return new CPoint(mapArray.GetLength(0), mapArray.GetLength(1)); }
     }
 }

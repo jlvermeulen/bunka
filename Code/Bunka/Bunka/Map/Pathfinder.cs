@@ -5,22 +5,22 @@ using Microsoft.Xna.Framework;
 public static class Pathfinder
 {
     // find shortest path using A*
-    public static List<Point> GetPath(Point from, Point dest)
+    public static List<CPoint> GetPath(CPoint from, CPoint dest)
     {
-        HashSet<Point> closed = new HashSet<Point>();
-        Dictionary<Point, PathNode> open = new Dictionary<Point, PathNode>();
-        open.Add(from, new PathNode(from, BunkaGame.MapManager.ManhattanDistance(from, dest), null));
+        HashSet<CPoint> closed = new HashSet<CPoint>();
+        Dictionary<CPoint, PathNode> openDict = new Dictionary<CPoint, PathNode>();
+        MinHeap<PathNode> open = new MinHeap<PathNode>();
+        PathNode node = new PathNode(from, BunkaGame.MapManager.ManhattanDistance(from, dest), null);
+        open.Add(node);
+        openDict.Add(from, node);
 
         PathNode last = null;
-        List<Point> reachable;
+        List<CPoint> reachable;
         while (open.Count > 0)
         {
-            PathNode best = new PathNode(new Point(-1, -1), int.MaxValue, null);
-            foreach (PathNode p in open.Values)
-                if (p.F < best.F)
-                    best = p;
+            PathNode best = open.Top();
 
-            open.Remove(best.Position);
+            openDict.Remove(best.Position);
             closed.Add(best.Position);
 
             if (best.Position == dest)
@@ -30,13 +30,12 @@ public static class Pathfinder
             }
 
             reachable = BunkaGame.MapManager.FreeNeighbours(best.Position);
-            PathNode node;
-            foreach (Point p in reachable)
+            foreach (CPoint p in reachable)
             {
                 if (closed.Contains(p))
                     continue;
 
-                if (open.TryGetValue(p, out node))
+                if (openDict.TryGetValue(p, out node))
                 {
                     if (best.G + 1 < node.G)
                     {
@@ -45,14 +44,18 @@ public static class Pathfinder
                     }
                 }
                 else
-                    open.Add(p, new PathNode(p, BunkaGame.MapManager.ManhattanDistance(p, dest), best));
+                {
+                    node = new PathNode(p, BunkaGame.MapManager.ManhattanDistance(p, dest), best);
+                    open.Add(node);
+                    openDict.Add(p, node);
+                }
             }
         }
 
         if (last == null)
             return null;
 
-        List<Point> path = new List<Point>();
+        List<CPoint> path = new List<CPoint>();
         while (last != null)
         {
             path.Add(last.Position);
@@ -63,9 +66,9 @@ public static class Pathfinder
         return path;
     }
 
-    private class PathNode
+    private class PathNode : IComparable<PathNode>
     {
-        public PathNode(Point position, int h, PathNode parent)
+        public PathNode(CPoint position, int h, PathNode parent)
         {
             this.Position = position;
             if (parent != null)
@@ -76,7 +79,12 @@ public static class Pathfinder
             this.Parent = parent;
         }
 
-        public Point Position
+        public int CompareTo(PathNode other)
+        {
+            return this.F - other.F;
+        }
+
+        public CPoint Position
         {
             get;
             set;

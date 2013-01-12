@@ -40,7 +40,7 @@ public class DebugConsole
                             Console.WriteLine("Cannot construct \'{0}\': unknown building type.", parts[1]);
                         break;
                     case "draw":
-                        Point dimensions = BunkaGame.MapManager.Dimensions;
+                        CPoint dimensions = BunkaGame.MapManager.Dimensions;
                         for (int y = 0; y < dimensions.Y; y++)
                         {
                             for (int x = 0; x < dimensions.X; x++)
@@ -55,7 +55,9 @@ public class DebugConsole
                         }
                         break;
                     case "path":
-                        List<Point> path = Pathfinder.GetPath(new Point(int.Parse(parts[1]), int.Parse(parts[2])), new Point(int.Parse(parts[3]), int.Parse(parts[4])));
+                        DateTime start = DateTime.Now;
+                        List<CPoint> path = Pathfinder.GetPath(new CPoint(int.Parse(parts[1]), int.Parse(parts[2])), new CPoint(int.Parse(parts[3]), int.Parse(parts[4])));
+                        DateTime end = DateTime.Now;
                         dimensions = BunkaGame.MapManager.Dimensions;
                         for (int y = 0; y < dimensions.Y; y++)
                         {
@@ -64,13 +66,14 @@ public class DebugConsole
                                 Building b = BunkaGame.MapManager[x, y];
                                 if (b != null)
                                     Console.Write(buildingChars[b.BuildingType]);
-                                else if (path.Contains(new Point(x, y)))
+                                else if (path.Contains(new CPoint(x, y)))
                                     Console.Write('+');
                                 else
                                     Console.Write('.');
                             }
                             Console.WriteLine();
                         }
+                        Console.WriteLine("Found path in {0} ms.", (end - start).TotalMilliseconds);
                         break;
                     default:
                         Console.WriteLine("Unrecognised command '{0}'.", parts[0]);
