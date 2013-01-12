@@ -1,14 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 // class for allowing the game to be controlled through the console
 public class DebugConsole
 {
+    private static readonly Dictionary<BuildingType, char> buildingChars = new Dictionary<BuildingType, char>
+                                                                            {
+                                                                                {BuildingType.CoalMine, 'c'},
+                                                                                {BuildingType.CokingPlant, 'C'},
+                                                                                {BuildingType.Construction, 'x'},
+                                                                                {BuildingType.Fishery, 'F'},
+                                                                                {BuildingType.IronMine, 'i'},
+                                                                                {BuildingType.IronSmelter, 'I'},
+                                                                                {BuildingType.Lumberjack, 'L'},
+                                                                                {BuildingType.Quarry, 'Q'},
+                                                                                {BuildingType.Sawmill, 'S'}
+                                                                            };
+
     public void Update(GameTime t)
     {
         if (BunkaGame.InputManager.IsKeyPressed(Keys.OemTilde))
-        {            
+        {
             string line;
             while ((line = Console.ReadLine()) != "")
             {
@@ -18,21 +32,42 @@ public class DebugConsole
                 {
                     case "build":
                         BuildingType type;
-                        if (Enum.TryParse(parts[1], true, out type))
+                        if (parts.Length != 4)
+                            Console.WriteLine("Invalid number of arguments.");
+                        else if (Enum.TryParse(parts[1], true, out type))
                             BunkaGame.ConstructionManager.ConstructBuilding(type, BunkaGame.MapManager.IndexToCellCentre(int.Parse(parts[2]), int.Parse(parts[3])));
                         else
                             Console.WriteLine("Cannot construct \'{0}\': unknown building type.", parts[1]);
                         break;
                     case "draw":
-                        Tuple<int, int> dimensions = BunkaGame.MapManager.Dimensions;
-                        for (int y = 0; y < dimensions.Item2; y++)
+                        Point dimensions = BunkaGame.MapManager.Dimensions;
+                        for (int y = 0; y < dimensions.Y; y++)
                         {
-                            for (int x = 0; x < dimensions.Item1; x++)
+                            for (int x = 0; x < dimensions.X; x++)
                             {
-                                if (BunkaGame.MapManager[x, y] == null)
+                                Building b = BunkaGame.MapManager[x, y];
+                                if (b == null)
                                     Console.Write('.');
                                 else
-                                    Console.Write('x');
+                                    Console.Write(buildingChars[b.BuildingType]);
+                            }
+                            Console.WriteLine();
+                        }
+                        break;
+                    case "path":
+                        List<Point> path = Pathfinder.GetPath(new Point(int.Parse(parts[1]), int.Parse(parts[2])), new Point(int.Parse(parts[3]), int.Parse(parts[4])));
+                        dimensions = BunkaGame.MapManager.Dimensions;
+                        for (int y = 0; y < dimensions.Y; y++)
+                        {
+                            for (int x = 0; x < dimensions.X; x++)
+                            {
+                                Building b = BunkaGame.MapManager[x, y];
+                                if (b != null)
+                                    Console.Write(buildingChars[b.BuildingType]);
+                                else if (path.Contains(new Point(x, y)))
+                                    Console.Write('+');
+                                else
+                                    Console.Write('.');
                             }
                             Console.WriteLine();
                         }

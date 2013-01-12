@@ -111,7 +111,7 @@ public class CarrierManager
 
     public Carrier CreateCarrier()
     {
-        Carrier temp = new Carrier();
+        Carrier temp = new Carrier(new Vector2(0, 0));
         carriers.Add(temp);
         idleCarriers.Add(temp);
         return temp;

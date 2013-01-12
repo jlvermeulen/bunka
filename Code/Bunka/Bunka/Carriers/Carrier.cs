@@ -6,8 +6,9 @@ public class Carrier
     ResourceType resourceType;
     Building destination;
     uint amount;
+    Vector2 position;
 
-    public Carrier()
+    public Carrier(Vector2 position)
     {
         resourceType = ResourceType.None;
     }
@@ -57,5 +58,11 @@ public class Carrier
     {
         get { return amount; }
         set { amount = value; }
+    }
+
+    public Vector2 Position
+    {
+        get { return position; }
+        set { position = value; }
     }
 }

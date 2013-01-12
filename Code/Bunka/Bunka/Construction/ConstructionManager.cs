@@ -104,7 +104,7 @@ public class ConstructionManager
 
     public Builder CreateBuilder()
     {
-        Builder temp = new Builder();
+        Builder temp = new Builder(new Vector2(0, 0));
         builders.Add(temp);
         idleBuilders.Add(temp);
         return temp;

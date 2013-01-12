@@ -3,6 +3,12 @@
 public class Builder
 {
     ConstructionBuilding target;
+    Vector2 position;
+
+    public Builder(Vector2 position)
+    {
+        this.position = position;
+    }
 
     public void Update(GameTime t)
     {
@@ -28,9 +34,19 @@ public class Builder
         }
     }
 
+    //////////////////
+    //  PROPERTIES  //
+    //////////////////
+
     public ConstructionBuilding CurrentConstruction
     {
         get { return target; }
         set { target = value; }
+    }
+
+    public Vector2 Position
+    {
+        get { return position; }
+        set { position = value; }
     }
 }
