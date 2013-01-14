@@ -35,7 +35,7 @@ public class DebugConsole
                         if (parts.Length != 4)
                             Console.WriteLine("Invalid number of arguments.");
                         else if (Enum.TryParse(parts[1], true, out type))
-                            BunkaGame.ConstructionManager.ConstructBuilding(type, BunkaGame.MapManager.IndexToCellCentre(int.Parse(parts[2]), int.Parse(parts[3])));
+                            BunkaGame.ConstructionManager.ConstructBuilding(type, new CPoint(int.Parse(parts[2]), int.Parse(parts[3])));
                         else
                             Console.WriteLine("Cannot construct \'{0}\': unknown building type.", parts[1]);
                         break;
@@ -56,7 +56,7 @@ public class DebugConsole
                         break;
                     case "path":
                         DateTime start = DateTime.Now;
-                        List<CPoint> path = Pathfinder.GetPath(new CPoint(int.Parse(parts[1]), int.Parse(parts[2])), new CPoint(int.Parse(parts[3]), int.Parse(parts[4])));
+                        LinkedList<CPoint> path = Pathfinder.GetPath(new CPoint(int.Parse(parts[1]), int.Parse(parts[2])), new CPoint(int.Parse(parts[3]), int.Parse(parts[4])));
                         DateTime end = DateTime.Now;
                         dimensions = BunkaGame.MapManager.Dimensions;
                         for (int y = 0; y < dimensions.Y; y++)

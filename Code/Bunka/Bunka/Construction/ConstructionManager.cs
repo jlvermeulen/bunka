@@ -96,9 +96,9 @@ public class ConstructionManager
     //   METHODS    //
     //////////////////
 
-    public void ConstructBuilding(BuildingType type, Vector2 position)
+    public void ConstructBuilding(BuildingType type, CPoint position)
     {
-        if (BunkaGame.MapManager.IsPositionOnMap(position) && BunkaGame.MapManager[position] == null)
+        if (BunkaGame.MapManager.IsValidIndex(position) && BunkaGame.MapManager[position] == null)
             constructionRequests.AddLast(new ConstructionRequest(type, position));
     }
 

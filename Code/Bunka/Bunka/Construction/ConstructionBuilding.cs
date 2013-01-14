@@ -3,16 +3,14 @@ using Microsoft.Xna.Framework;
 
 public class ConstructionBuilding : Building
 {
-    ConstructionHandler handler;
     Dictionary<ResourceType, uint> costs;
-    float constructionTime;
 
-    public ConstructionBuilding(ConstructionHandler handler, ResourceType[] costTypes, uint[] costAmounts, float constructionTime, Vector2 position)
+    public ConstructionBuilding(ConstructionHandler handler, ResourceType[] costTypes, uint[] costAmounts, float constructionTime, CPoint position)
         : base(BuildingType.Construction, position)
     {
         BunkaGame.MapManager[position] = this;
-        this.handler = handler;
-        this.constructionTime = constructionTime;
+        this.ConstructionHandler = handler;
+        this.ConstructionTime = constructionTime;
         costs = new Dictionary<ResourceType, uint>();
 
         for (int i = 0; i < costTypes.Length; i++)
@@ -42,14 +40,7 @@ public class ConstructionBuilding : Building
         get { return costs.Count > 0; }
     }
 
-    public float ConstructionTime
-    {
-        get { return constructionTime; }
-        set { constructionTime = value; }
-    }
+    public float ConstructionTime { get; set; }
 
-    public ConstructionHandler ConstructionHandler
-    {
-        get { return handler; }
-    }
+    public ConstructionHandler ConstructionHandler { get; private set; }
 }

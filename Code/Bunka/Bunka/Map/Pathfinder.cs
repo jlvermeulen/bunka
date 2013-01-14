@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 public static class Pathfinder
 {
     // find shortest path using A*
-    public static List<CPoint> GetPath(CPoint from, CPoint dest)
+    public static LinkedList<CPoint> GetPath(CPoint from, CPoint dest)
     {
         HashSet<CPoint> closed = new HashSet<CPoint>();
         Dictionary<CPoint, PathNode> openDict = new Dictionary<CPoint, PathNode>();
@@ -55,13 +55,12 @@ public static class Pathfinder
         if (last == null)
             return null;
 
-        List<CPoint> path = new List<CPoint>();
+        LinkedList<CPoint> path = new LinkedList<CPoint>();
         while (last != null)
         {
-            path.Add(last.Position);
+            path.AddFirst(last.Position);
             last = last.Parent;
         }
-        path.Reverse();
 
         return path;
     }

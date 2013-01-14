@@ -1,29 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-
-// parent class for all buildings
+﻿// parent class for all buildings
 public abstract class Building
 {
-    BuildingType type;
-    Vector2 position;
-
-    public Building(BuildingType type, Vector2 position)
+    public Building(BuildingType type, CPoint position)
     {
         BunkaGame.MapManager[position] = this;
-        this.type = type;
-        this.position = position;
+        this.BuildingType = type;
+        this.Position = position;
     }
 
     //////////////////
     //  PROPERTIES  //
     //////////////////
 
-    public BuildingType BuildingType
-    {
-        get { return type; }
-    }
+    public BuildingType BuildingType { get; private set; }
 
-    public Vector2 Position
-    {
-        get { return position; }
-    }
+    public CPoint Position { get; private set; }
 }

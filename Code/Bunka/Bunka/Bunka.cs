@@ -12,17 +12,17 @@ public class Bunka : Game
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         BunkaGame.ResourceManager.AddInitialResources();
-        //BunkaGame.ConstructionManager.AddInitialConstruction();
     }
 
     protected override void Initialize()
     {
         base.Initialize();
+        spriteBatch = new SpriteBatch(GraphicsDevice);
     }
 
     protected override void LoadContent()
     {
-        spriteBatch = new SpriteBatch(GraphicsDevice);
+        
     }
 
     protected override void Update(GameTime t)

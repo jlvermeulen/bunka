@@ -4,27 +4,25 @@ using Microsoft.Xna.Framework;
 // class for buildings that produce resources
 public class BuildingProduction : Building
 {
-    ResourceProducer[] producers;
-
     // overload for single producer
-    public BuildingProduction(BuildingType type, ResourceProducer producers, Vector2 position)
+    public BuildingProduction(BuildingType type, ResourceProducer producers, CPoint position)
         : base(type, position)
     {
-        this.producers = new ResourceProducer[] { producers };
+        this.ResourceProducers = new ResourceProducer[] { producers };
         InitialiseProducers();
     }
 
     // overload for multiple producers
-    public BuildingProduction(BuildingType type, ResourceProducer[] producers, Vector2 position)
+    public BuildingProduction(BuildingType type, ResourceProducer[] producers, CPoint position)
         : base(type, position)
     {
-        this.producers = producers;
+        this.ResourceProducers = producers;
         InitialiseProducers();
     }
 
     public void Update(GameTime t)
     {
-        foreach (ResourceProducer p in producers)
+        foreach (ResourceProducer p in this.ResourceProducers)
             p.Update(t);
     }
 
@@ -34,19 +32,19 @@ public class BuildingProduction : Building
 
     void InitialiseProducers()
     {
-        for (int i = 0; i < producers.Length; i++)
+        for (int i = 0; i < ResourceProducers.Length; i++)
         {
-            producers[i].Output.Location = this;
+            this.ResourceProducers[i].Output.Location = this;
 
             // add to free resources, create new entry for resource if necessary
             LinkedList<Resource> list;
-            if (BunkaGame.ResourceManager.FreeResources.TryGetValue(producers[i].OutputType, out list))
-                list.AddFirst(producers[i].Output);
+            if (BunkaGame.ResourceManager.FreeResources.TryGetValue(this.ResourceProducers[i].OutputType, out list))
+                list.AddFirst(this.ResourceProducers[i].Output);
             else
             {
                 list = new LinkedList<Resource>();
-                list.AddFirst(producers[i].Output);
-                BunkaGame.ResourceManager.FreeResources.Add(producers[i].OutputType, list);
+                list.AddFirst(this.ResourceProducers[i].Output);
+                BunkaGame.ResourceManager.FreeResources.Add(this.ResourceProducers[i].OutputType, list);
             }
         }
     }
@@ -55,9 +53,5 @@ public class BuildingProduction : Building
     //  PROPERTIES  //
     //////////////////
 
-    public ResourceProducer[] ResourceProducers
-    {
-        get { return producers; }
-        set { producers = value; }
-    }
+    public ResourceProducer[] ResourceProducers { get; set; }
 }

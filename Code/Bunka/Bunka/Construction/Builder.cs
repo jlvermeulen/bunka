@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 public class Builder
 {
     ConstructionBuilding target;
-    Vector2 position;
+    LinkedList<CPoint> path;
 
     public Builder(Vector2 position)
     {
-        this.position = position;
+        this.Position = position;
     }
 
     public void Update(GameTime t)
@@ -18,7 +19,7 @@ public class Builder
             if (true)
             {
                 // work on current target building
-                target.ConstructionTime -= (float)t.ElapsedGameTime.TotalSeconds;
+                this.CurrentConstruction.ConstructionTime -= (float)t.ElapsedGameTime.TotalSeconds;
                 if (target.ConstructionTime <= 0)
                 {
                     // request moving to idle list
@@ -29,6 +30,7 @@ public class Builder
 
                     // reset target
                     target = null;
+                    path = null;
                 }
             }
         }
@@ -41,12 +43,12 @@ public class Builder
     public ConstructionBuilding CurrentConstruction
     {
         get { return target; }
-        set { target = value; }
+        set
+        {
+            target = value;
+            path = Pathfinder.GetPath(BunkaGame.MapManager.PositionToIndex(this.Position), target.Position);
+        }
     }
 
-    public Vector2 Position
-    {
-        get { return position; }
-        set { position = value; }
-    }
+    public Vector2 Position { get; set; }
 }

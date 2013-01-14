@@ -2,22 +2,14 @@
 
 public struct ConstructionRequest
 {
-    BuildingType type;
-    Vector2 position;
-
-    public ConstructionRequest(BuildingType type, Vector2 position)
+    public ConstructionRequest(BuildingType type, CPoint position)
+        : this()
     {
-        this.type = type;
-        this.position = position;
+        this.BuildingType = type;
+        this.Position = position;
     }
 
-    public BuildingType BuildingType
-    {
-        get { return type; }
-    }
+    public BuildingType BuildingType { get; private set; }
 
-    public Vector2 Position
-    {
-        get { return position; }
-    }
+    public CPoint Position { get; private set; }
 }

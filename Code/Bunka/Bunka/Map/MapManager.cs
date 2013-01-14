@@ -6,13 +6,13 @@ using Microsoft.Xna.Framework;
 public class MapManager
 {
     Building[,] mapArray;
-    float cellSize;
 
     public MapManager()
     {
-        mapArray = new Building[200, 200];
-        cellSize = 10;
-        Console.SetBufferSize(201, 201);
+        this.Dimensions = new CPoint(20, 20);
+        this.CellSize = 10;
+        mapArray = new Building[this.Dimensions.X, this.Dimensions.Y];
+        Console.SetBufferSize(201, 500);
     }
 
     //////////////////
@@ -33,7 +33,7 @@ public class MapManager
     // check if position falls within the bounds of the map
     public bool IsPositionOnMap(Vector2 pos)
     {
-        return pos.X < mapArray.GetLength(0) * cellSize && pos.Y < mapArray.GetLength(1) * cellSize && pos.X >= 0 && pos.Y >= 0;
+        return pos.X < mapArray.GetLength(0) * this.CellSize && pos.Y < mapArray.GetLength(1) * this.CellSize && pos.X >= 0 && pos.Y >= 0;
     }
 
     // returns the position of the centre of the cell at the specified index
@@ -41,7 +41,7 @@ public class MapManager
     {
         if (!IsValidIndex(x, y))
             return new Vector2(-1, -1);
-        return new Vector2(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
+        return new Vector2(x * this.CellSize + this.CellSize / 2, y * this.CellSize + this.CellSize / 2);
     }
 
     // returns the index of the cell that contains the specified position
@@ -49,7 +49,7 @@ public class MapManager
     {
         if (!IsPositionOnMap(pos))
             return new CPoint(-1, -1);
-        return new CPoint((int)(pos.X / cellSize), (int)(pos.Y / cellSize));
+        return new CPoint((int)(pos.X / this.CellSize), (int)(pos.Y / this.CellSize));
     }
 
     public int ManhattanDistance(CPoint from, CPoint to)
@@ -90,7 +90,7 @@ public class MapManager
         List<CPoint> possibles = Neighbours(cell);
         List<CPoint> result = new List<CPoint>();
         foreach (CPoint p in possibles)
-            if (mapArray[p.X, p.Y] == null)
+            if (this[p] == null)
                 result.Add(p);
         return result;
     }
@@ -113,6 +113,12 @@ public class MapManager
         }
     }
 
+    public Building this[CPoint index]
+    {
+        get { return this[index.X, index.Y]; }
+        set { this[index.X, index.Y] = value; }
+    }
+
     public Building this[int x, int y]
     {
         get
@@ -128,8 +134,7 @@ public class MapManager
         }
     }
 
-    public CPoint Dimensions
-    {
-        get { return new CPoint(mapArray.GetLength(0), mapArray.GetLength(1)); }
-    }
+    public CPoint Dimensions { get; private set; }
+
+    public float CellSize { get; private set; }
 }

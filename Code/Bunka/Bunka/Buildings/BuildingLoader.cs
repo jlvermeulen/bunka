@@ -44,7 +44,7 @@ public class BuildingLoader
     }
 
     // create a constructionhandler for a specific building
-    public ConstructionHandler CreateConstructionRequest(BuildingType type, Vector2 position)
+    public ConstructionHandler CreateConstructionRequest(BuildingType type, CPoint position)
     {
         List<string[]> building = buildings[type];
 
@@ -70,7 +70,7 @@ public class BuildingLoader
     }
 
     // create a building object of a specific type
-    public Building CreateBuilding(BuildingType type, Vector2 position)
+    public Building CreateBuilding(BuildingType type, CPoint position)
     {
         if (type > BuildingType.CONVERSION)
             return CreateConversionBuilding(type, position);
@@ -81,7 +81,7 @@ public class BuildingLoader
     }
 
     // method for creating conversion buildings
-    BuildingConversion CreateConversionBuilding(BuildingType type, Vector2 position)
+    BuildingConversion CreateConversionBuilding(BuildingType type, CPoint position)
     {
         // stats for current building
         List<string[]> building = buildings[type];
@@ -119,7 +119,7 @@ public class BuildingLoader
     }
 
     // method for creating production buildings
-    BuildingProduction CreateProductionBuilding(BuildingType type, Vector2 position)
+    BuildingProduction CreateProductionBuilding(BuildingType type, CPoint position)
     {
         // stats for current building
         List<string[]> building = buildings[type];

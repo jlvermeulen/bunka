@@ -4,28 +4,27 @@ using Microsoft.Xna.Framework;
 // parent class for buildings that convert resources
 public class BuildingConversion : Building
 {
-    ResourceConverter converter;
     Dictionary<ResourceType, uint> requestedResources;
 
-    public BuildingConversion(BuildingType type, ResourceConverter converter, Vector2 position)
+    public BuildingConversion(BuildingType type, ResourceConverter converter, CPoint position)
         : base(type, position)
     {
-        this.converter = converter;
+        this.ResourceConverter = converter;
         requestedResources = new Dictionary<ResourceType, uint>();
         InitialiseConverters();
     }
 
     public void Update(GameTime t)
     {
-        for (int i = 0; i < converter.Input.Length; i++)
+        for (int i = 0; i < this.ResourceConverter.Input.Length; i++)
         {
-            if (converter.Input[i].Amount < converter.InputSize[i] && !requestedResources.ContainsKey(converter.Input[i].ResourceType))
+            if (this.ResourceConverter.Input[i].Amount < this.ResourceConverter.InputSize[i] && !requestedResources.ContainsKey(this.ResourceConverter.Input[i].ResourceType))
             {
-                BunkaGame.ResourceManager.RequestResource(converter.InputTypes[i], converter.InputSize[i] - converter.Input[i].Amount, this);
-                requestedResources.Add(converter.Input[i].ResourceType, converter.InputSize[i] - converter.Input[i].Amount);
+                BunkaGame.ResourceManager.RequestResource(this.ResourceConverter.InputTypes[i], this.ResourceConverter.InputSize[i] - this.ResourceConverter.Input[i].Amount, this);
+                requestedResources.Add(this.ResourceConverter.Input[i].ResourceType, this.ResourceConverter.InputSize[i] - this.ResourceConverter.Input[i].Amount);
             }
         }
-        converter.Update(t);
+        this.ResourceConverter.Update(t);
     }
 
     //////////////////
@@ -42,7 +41,7 @@ public class BuildingConversion : Building
             requestedResources[type] = curr - amount;
 
         // deliver resource
-        foreach (Resource r in converter.Input)
+        foreach (Resource r in this.ResourceConverter.Input)
             if (r.ResourceType == type)
             {
                 r.Amount += amount;
@@ -52,22 +51,22 @@ public class BuildingConversion : Building
 
     void InitialiseConverters()
     {
-        for (int i = 0; i < converter.Input.Length; i++)
-            converter.Input[i].Location = this;
+        for (int i = 0; i < this.ResourceConverter.Input.Length; i++)
+            this.ResourceConverter.Input[i].Location = this;
 
-        for (int i = 0; i < converter.Output.Length; i++)
+        for (int i = 0; i < this.ResourceConverter.Output.Length; i++)
         {
-            converter.Output[i].Location = this;
+            this.ResourceConverter.Output[i].Location = this;
 
             // add to free resources, create new entry for resource if necessary
             LinkedList<Resource> list;
-            if (BunkaGame.ResourceManager.FreeResources.TryGetValue(converter.OutputTypes[i], out list))
-                list.AddFirst(converter.Output[i]);
+            if (BunkaGame.ResourceManager.FreeResources.TryGetValue(this.ResourceConverter.OutputTypes[i], out list))
+                list.AddFirst(this.ResourceConverter.Output[i]);
             else
             {
                 list = new LinkedList<Resource>();
-                list.AddFirst(converter.Output[i]);
-                BunkaGame.ResourceManager.FreeResources.Add(converter.OutputTypes[i], list);
+                list.AddFirst(this.ResourceConverter.Output[i]);
+                BunkaGame.ResourceManager.FreeResources.Add(this.ResourceConverter.OutputTypes[i], list);
             }
         }
     }
@@ -76,9 +75,5 @@ public class BuildingConversion : Building
     //  PROPERTIES  //
     //////////////////
 
-    public ResourceConverter ResourceConverter
-    {
-        get { return converter; }
-        set { converter = value; }
-    }
+    public ResourceConverter ResourceConverter { get; set; }
 }

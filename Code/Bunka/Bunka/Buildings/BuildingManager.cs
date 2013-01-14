@@ -49,7 +49,7 @@ public class BuildingManager
     //   METHODS    //
     //////////////////
 
-    public void CreateBuilding(BuildingType type, Vector2 position)
+    public void CreateBuilding(BuildingType type, CPoint position)
     {
         Building building = loader.CreateBuilding(type, position);
 

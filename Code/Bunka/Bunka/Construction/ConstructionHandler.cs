@@ -2,30 +2,21 @@
 
 public class ConstructionHandler
 {
-    ConstructionBuilding location;
-    BuildingType type;
-
-    public ConstructionHandler(BuildingType type, ResourceType[] costTypes, uint[] costAmounts, float constructionTime, Vector2 position)
+    public ConstructionHandler(BuildingType type, ResourceType[] costTypes, uint[] costAmounts, float constructionTime, CPoint position)
     {
-        this.location = new ConstructionBuilding(this, costTypes, costAmounts, constructionTime, position);
-        this.type = type;
+        this.Location = new ConstructionBuilding(this, costTypes, costAmounts, constructionTime, position);
+        this.BuildingType = type;
 
         // request required resources
         for (int i = 0; i < costTypes.Length; i++)
-            BunkaGame.ResourceManager.RequestResource(costTypes[i], costAmounts[i], location);
+            BunkaGame.ResourceManager.RequestResource(costTypes[i], costAmounts[i], this.Location);
     }
 
     //////////////////
     //  PROPERTIES  //
     //////////////////
 
-    public ConstructionBuilding Location
-    {
-        get { return location; }
-    }
+    public ConstructionBuilding Location { get; private set; }
 
-    public BuildingType BuildingType
-    {
-        get { return type; }
-    }
+    public BuildingType BuildingType { get; private set; }
 }
