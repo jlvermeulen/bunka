@@ -7,15 +7,14 @@ public enum BuildingType { Construction, PRODUCTION, Quarry, Lumberjack, CoalMin
 // class for building administration
 public class BuildingManager
 {
-    BuildingLoader loader;
     List<BuildingProduction> production;
     List<BuildingConversion> conversion;
 
     public BuildingManager()
     {
-        loader = new BuildingLoader();
-        production = new List<BuildingProduction>();
-        conversion = new List<BuildingConversion>();
+        this.BuildingLoader = new BuildingLoader();
+        this.production = new List<BuildingProduction>();
+        this.conversion = new List<BuildingConversion>();
         // Test();
     }
     /*
@@ -35,11 +34,11 @@ public class BuildingManager
     */
     public void Update(GameTime t)
     {
-        foreach (BuildingProduction p in production)
+        foreach (BuildingProduction p in this.production)
         {
             p.Update(t);
         }
-        foreach (BuildingConversion c in conversion)
+        foreach (BuildingConversion c in this.conversion)
         {
             c.Update(t);
         }
@@ -51,20 +50,17 @@ public class BuildingManager
 
     public void CreateBuilding(BuildingType type, CPoint position)
     {
-        Building building = loader.CreateBuilding(type, position);
+        Building building = this.BuildingLoader.CreateBuilding(type, position);
 
         if (type > BuildingType.CONVERSION)
-            conversion.Add((BuildingConversion)building);
+            this.conversion.Add((BuildingConversion)building);
         else
-            production.Add((BuildingProduction)building);
+            this.production.Add((BuildingProduction)building);
     }
 
     //////////////////
     //  PROPERTIES  //
     //////////////////
 
-    public BuildingLoader BuildingLoader
-    {
-        get { return loader; }
-    }
+    public BuildingLoader BuildingLoader { get; private set; }
 }

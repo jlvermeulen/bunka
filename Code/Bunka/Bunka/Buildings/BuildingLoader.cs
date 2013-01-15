@@ -13,7 +13,7 @@ public class BuildingLoader
         List<string> files = LoadDirectory("Content/Buildings");
 
         // initialise building dictionary
-        buildings = new Dictionary<BuildingType, List<string[]>>();
+        this.buildings = new Dictionary<BuildingType, List<string[]>>();
 
         // load stats per file
         for (int i = 0; i < files.Count; i++)
@@ -37,7 +37,7 @@ public class BuildingLoader
             }
 
             // add building to dictionary
-            buildings.Add(type, current);
+            this.buildings.Add(type, current);
 
             reader.Close();
         }
@@ -46,7 +46,7 @@ public class BuildingLoader
     // create a constructionhandler for a specific building
     public ConstructionHandler CreateConstructionRequest(BuildingType type, CPoint position)
     {
-        List<string[]> building = buildings[type];
+        List<string[]> building = this.buildings[type];
 
         // offset for buildings that have more lines preceding the construction information
         int offset = type > BuildingType.CONVERSION ? 2 : 0;
@@ -81,10 +81,10 @@ public class BuildingLoader
     }
 
     // method for creating conversion buildings
-    BuildingConversion CreateConversionBuilding(BuildingType type, CPoint position)
+    private BuildingConversion CreateConversionBuilding(BuildingType type, CPoint position)
     {
         // stats for current building
-        List<string[]> building = buildings[type];
+        List<string[]> building = this.buildings[type];
 
         string[] oTypes = building[0][1].Split(',');
         string[] oAmounts = building[1][1].Split(',');
@@ -119,10 +119,10 @@ public class BuildingLoader
     }
 
     // method for creating production buildings
-    BuildingProduction CreateProductionBuilding(BuildingType type, CPoint position)
+    private BuildingProduction CreateProductionBuilding(BuildingType type, CPoint position)
     {
         // stats for current building
-        List<string[]> building = buildings[type];
+        List<string[]> building = this.buildings[type];
 
         string[] types = building[0][1].Split(',');
         string[] amounts = building[1][1].Split(',');
@@ -136,7 +136,7 @@ public class BuildingLoader
         return new BuildingProduction(type, producers.ToArray(), position);
     }
 
-    List<string> LoadDirectory(string root)
+    private List<string> LoadDirectory(string root)
     {
         List<string> filePaths = new List<string>();
 

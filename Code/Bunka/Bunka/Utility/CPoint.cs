@@ -9,8 +9,8 @@ public struct CPoint : IComparable<CPoint>, IEquatable<CPoint>
         this.Y = y;
     }
 
-    public int X { get; set; }
-    public int Y { get; set; }
+    public int X { get; private set; }
+    public int Y { get; private set; }
 
     public int CompareTo(CPoint other)
     {
@@ -33,7 +33,7 @@ public struct CPoint : IComparable<CPoint>, IEquatable<CPoint>
 
     public override int GetHashCode()
     {
-        return X ^ Y;
+        return this.X ^ this.Y;
     }
 
     public static bool operator ==(CPoint left, CPoint right)

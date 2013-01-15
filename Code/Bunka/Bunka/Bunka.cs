@@ -9,15 +9,15 @@ public class Bunka : Game
 
     public Bunka()
     {
-        graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
+        this.graphics = new GraphicsDeviceManager(this);
+        this.Content.RootDirectory = "Content";
         BunkaGame.ResourceManager.AddInitialResources();
     }
 
     protected override void Initialize()
     {
         base.Initialize();
-        spriteBatch = new SpriteBatch(GraphicsDevice);
+        this.spriteBatch = new SpriteBatch(GraphicsDevice);
     }
 
     protected override void LoadContent()

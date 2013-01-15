@@ -4,34 +4,25 @@ using Microsoft.Xna.Framework.Graphics;
 // class for managing a single game
 class BunkaGameInstance
 {
-    InputManager inputManager;
-    ResourceManager resourceManager;
-    BuildingManager buildingManager;
-    ConstructionManager constructionManager;
-    CarrierManager carrierManager;
-    MapManager mapManager;
-
-    DebugConsole debugConsole;
-
     public BunkaGameInstance()
     {
-        inputManager = new InputManager();
-        resourceManager = new ResourceManager();
-        buildingManager = new BuildingManager();
-        constructionManager = new ConstructionManager();
-        carrierManager = new CarrierManager();
-        mapManager = new MapManager();
-        debugConsole = new DebugConsole();
+        this.InputManager = new InputManager();
+        this.ResourceManager = new ResourceManager();
+        this.BuildingManager = new BuildingManager();
+        this.ConstructionManager = new ConstructionManager();
+        this.CarrierManager = new CarrierManager();
+        this.MapManager = new MapManager();
+        this.DebugConsole = new DebugConsole();
     }
 
     public void Update(GameTime t)
     {
-        inputManager.Update(t);
-        resourceManager.Update(t);
-        buildingManager.Update(t);
-        constructionManager.Update(t);
-        carrierManager.Update(t);
-        debugConsole.Update(t);
+        this.InputManager.Update(t);
+        this.ResourceManager.Update(t);
+        this.BuildingManager.Update(t);
+        this.ConstructionManager.Update(t);
+        this.CarrierManager.Update(t);
+        this.DebugConsole.Update(t);
     }
 
     public void Draw(SpriteBatch s)
@@ -39,35 +30,19 @@ class BunkaGameInstance
 
     }
 
-    public ResourceManager ResourceManager
-    {
-        get { return resourceManager; }
-    }
+    public ResourceManager ResourceManager { get; private set; }
 
-    public BuildingManager BuildingManager
-    {
-        get { return buildingManager; }
-    }
+    public BuildingManager BuildingManager { get; private set; }
 
-    public ConstructionManager ConstructionManager
-    {
-        get { return constructionManager; }
-    }
+    public ConstructionManager ConstructionManager { get; private set; }
 
-    public CarrierManager CarrierManager
-    {
-        get { return carrierManager; }
-    }
+    public CarrierManager CarrierManager { get; private set; }
 
-    public MapManager MapManager
-    {
-        get { return mapManager; }
-    }
+    public MapManager MapManager { get; private set; }
 
-    public InputManager InputManager
-    {
-        get { return inputManager; }
-    }
+    public InputManager InputManager { get; private set; }
+
+    public DebugConsole DebugConsole { get; private set; }
 }
 
 public class BunkaGame
@@ -112,5 +87,10 @@ public class BunkaGame
     public static InputManager InputManager
     {
         get { return instance.InputManager; }
+    }
+
+    public static DebugConsole DebugConsole
+    {
+        get { return instance.DebugConsole; }
     }
 }

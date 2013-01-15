@@ -10,18 +10,18 @@ public class BuildingConversion : Building
         : base(type, position)
     {
         this.ResourceConverter = converter;
-        requestedResources = new Dictionary<ResourceType, uint>();
-        InitialiseConverters();
+        this.requestedResources = new Dictionary<ResourceType, uint>();
+        this.InitialiseConverters();
     }
 
     public void Update(GameTime t)
     {
         for (int i = 0; i < this.ResourceConverter.Input.Length; i++)
         {
-            if (this.ResourceConverter.Input[i].Amount < this.ResourceConverter.InputSize[i] && !requestedResources.ContainsKey(this.ResourceConverter.Input[i].ResourceType))
+            if (this.ResourceConverter.Input[i].Amount < this.ResourceConverter.InputSize[i] && !this.requestedResources.ContainsKey(this.ResourceConverter.Input[i].ResourceType))
             {
                 BunkaGame.ResourceManager.RequestResource(this.ResourceConverter.InputTypes[i], this.ResourceConverter.InputSize[i] - this.ResourceConverter.Input[i].Amount, this);
-                requestedResources.Add(this.ResourceConverter.Input[i].ResourceType, this.ResourceConverter.InputSize[i] - this.ResourceConverter.Input[i].Amount);
+                this.requestedResources.Add(this.ResourceConverter.Input[i].ResourceType, this.ResourceConverter.InputSize[i] - this.ResourceConverter.Input[i].Amount);
             }
         }
         this.ResourceConverter.Update(t);
@@ -34,11 +34,11 @@ public class BuildingConversion : Building
     public void DeliverResource(ResourceType type, uint amount)
     {
         // update requested resources
-        uint curr = requestedResources[type];
+        uint curr = this.requestedResources[type];
         if (amount >= curr)
-            requestedResources.Remove(type);
+            this.requestedResources.Remove(type);
         else
-            requestedResources[type] = curr - amount;
+            this.requestedResources[type] = curr - amount;
 
         // deliver resource
         foreach (Resource r in this.ResourceConverter.Input)
@@ -49,7 +49,7 @@ public class BuildingConversion : Building
             }
     }
 
-    void InitialiseConverters()
+    private void InitialiseConverters()
     {
         for (int i = 0; i < this.ResourceConverter.Input.Length; i++)
             this.ResourceConverter.Input[i].Location = this;

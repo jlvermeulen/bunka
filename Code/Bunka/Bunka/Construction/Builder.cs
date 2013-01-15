@@ -13,24 +13,24 @@ public class Builder
 
     public void Update(GameTime t)
     {
-        if (target != null)
+        if (this.target != null)
         {
             // TODO: add check to see if builder has arrived at target
             if (true)
             {
                 // work on current target building
                 this.CurrentConstruction.ConstructionTime -= (float)t.ElapsedGameTime.TotalSeconds;
-                if (target.ConstructionTime <= 0)
+                if (this.target.ConstructionTime <= 0)
                 {
                     // request moving to idle list
                     BunkaGame.ConstructionManager.MoveToIdle(this);
 
                     // signal that construction is finished
-                    BunkaGame.ConstructionManager.CompleteConstruction(target);
+                    BunkaGame.ConstructionManager.CompleteConstruction(this.target);
 
                     // reset target
-                    target = null;
-                    path = null;
+                    this.target = null;
+                    this.path = null;
                 }
             }
         }
@@ -42,11 +42,11 @@ public class Builder
 
     public ConstructionBuilding CurrentConstruction
     {
-        get { return target; }
+        get { return this.target; }
         set
         {
-            target = value;
-            path = Pathfinder.GetPath(BunkaGame.MapManager.PositionToIndex(this.Position), target.Position);
+            this.target = value;
+            this.path = Pathfinder.GetPath(BunkaGame.MapManager.PositionToIndex(this.Position), this.target.Position);
         }
     }
 

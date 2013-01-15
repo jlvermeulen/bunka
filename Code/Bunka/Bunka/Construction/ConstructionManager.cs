@@ -12,14 +12,14 @@ public class ConstructionManager
 
     public ConstructionManager()
     {
-        constructionRequests = new LinkedList<ConstructionRequest>();
-        collect = new List<ConstructionHandler>();
-        build = new List<ConstructionHandler>();
-        buildRequests = new LinkedList<BuildRequest>();
-        moveToIdle = new LinkedList<Builder>();
-        builders = new List<Builder>();
-        idleBuilders = new List<Builder>();
-        busyBuilders = new List<Builder>();
+        this.constructionRequests = new LinkedList<ConstructionRequest>();
+        this.collect = new List<ConstructionHandler>();
+        this.build = new List<ConstructionHandler>();
+        this.buildRequests = new LinkedList<BuildRequest>();
+        this.moveToIdle = new LinkedList<Builder>();
+        this.builders = new List<Builder>();
+        this.idleBuilders = new List<Builder>();
+        this.busyBuilders = new List<Builder>();
 
         CreateBuilder();
     }
@@ -35,59 +35,59 @@ public class ConstructionManager
     */
     public void Update(GameTime t)
     {
-        foreach (Builder b in builders)
+        foreach (Builder b in this.builders)
             b.Update(t);
 
         // move finished builders to the idle list
-        if (moveToIdle.Count > 0)
+        if (this.moveToIdle.Count > 0)
         {
-            LinkedListNode<Builder> node = moveToIdle.First;
+            LinkedListNode<Builder> node = this.moveToIdle.First;
             while (node != null)
             {
-                busyBuilders.Remove(node.Value);
-                idleBuilders.Add(node.Value);
-                moveToIdle.Remove(node);
-                node = moveToIdle.First;
+                this.busyBuilders.Remove(node.Value);
+                this.idleBuilders.Add(node.Value);
+                this.moveToIdle.Remove(node);
+                node = this.moveToIdle.First;
             }
         }
 
         // process new construction requests
-        if (constructionRequests.Count > 0)
+        if (this.constructionRequests.Count > 0)
         {
-            LinkedListNode<ConstructionRequest> node = constructionRequests.First;
+            LinkedListNode<ConstructionRequest> node = this.constructionRequests.First;
             while (node != null)
             {
-                collect.Add(BunkaGame.BuildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType, node.Value.Position));
-                constructionRequests.Remove(node);
-                node = constructionRequests.First;
+                this.collect.Add(BunkaGame.BuildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType, node.Value.Position));
+                this.constructionRequests.Remove(node);
+                node = this.constructionRequests.First;
             }
         }
 
         // move buildings that are done collecting to the build list and request a builder
-        for (int i = collect.Count - 1; i >= 0; i--)
-            if (!collect[i].Location.Collecting)
+        for (int i = this.collect.Count - 1; i >= 0; i--)
+            if (!this.collect[i].Location.Collecting)
             {
-                RequestBuilder(collect[i].Location);
-                build.Add(collect[i]);
-                collect.RemoveAt(i);
+                this.RequestBuilder(collect[i].Location);
+                this.build.Add(collect[i]);
+                this.collect.RemoveAt(i);
             }
 
         // process new building requests
-        if (buildRequests.Count > 0)
+        if (this.buildRequests.Count > 0)
         {
             // first request
-            LinkedListNode<BuildRequest> node = buildRequests.First;
+            LinkedListNode<BuildRequest> node = this.buildRequests.First;
 
             // keep processing as long as there is another request and an idle builder
-            while (node != null && idleBuilders.Count > 0)
+            while (node != null && this.idleBuilders.Count > 0)
             {
                 // give order to builder and move it from idle to busy
-                idleBuilders[0].CurrentConstruction = node.Value.Location;
-                busyBuilders.Add(idleBuilders[0]);
-                idleBuilders.RemoveAt(0);
+                this.idleBuilders[0].CurrentConstruction = node.Value.Location;
+                this.busyBuilders.Add(idleBuilders[0]);
+                this.idleBuilders.RemoveAt(0);
 
-                buildRequests.Remove(node);
-                node = buildRequests.First;
+                this.buildRequests.Remove(node);
+                node = this.buildRequests.First;
             }
         }
     }
@@ -99,31 +99,30 @@ public class ConstructionManager
     public void ConstructBuilding(BuildingType type, CPoint position)
     {
         if (BunkaGame.MapManager.IsValidIndex(position) && BunkaGame.MapManager[position] == null)
-            constructionRequests.AddLast(new ConstructionRequest(type, position));
+            this.constructionRequests.AddLast(new ConstructionRequest(type, position));
     }
 
     public Builder CreateBuilder()
     {
         Builder temp = new Builder(new Vector2(0, 0));
-        builders.Add(temp);
-        idleBuilders.Add(temp);
+        this.builders.Add(temp);
+        this.idleBuilders.Add(temp);
         return temp;
     }
 
     public void RequestBuilder(ConstructionBuilding location)
     {
-        buildRequests.AddLast(new BuildRequest(location));
+        this.buildRequests.AddLast(new BuildRequest(location));
     }
 
     public void MoveToIdle(Builder builder)
     {
-        moveToIdle.AddFirst(builder);
+        this.moveToIdle.AddFirst(builder);
     }
 
     public void CompleteConstruction(ConstructionBuilding location)
     {
-        build.Remove(location.ConstructionHandler);
+        this.build.Remove(location.ConstructionHandler);
         BunkaGame.BuildingManager.CreateBuilding(location.ConstructionHandler.BuildingType, location.Position);
-        System.Console.WriteLine("Built {0}", location.ConstructionHandler.BuildingType.ToString());
     }
 }

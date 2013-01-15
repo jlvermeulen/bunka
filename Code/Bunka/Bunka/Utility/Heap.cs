@@ -10,36 +10,36 @@ public class MaxHeap<T> : Heap<T>
 
     protected override void Heapify(int root)
     {
-        int p = Parent(root);
+        int p = this.Parent(root);
 
-        if (p != -1 && heap[p].CompareTo(heap[root]) < 0)
+        if (p != -1 && this.heap[p].CompareTo(this.heap[root]) < 0)
         {
-            Switch(p, root);
-            Heapify(p);
+            this.Switch(p, root);
+            this.Heapify(p);
         }
         else
         {
-            int l = Left(root);
-            int r = Right(root);
+            int l = this.Left(root);
+            int r = this.Right(root);
 
             if (l != -1 && r != -1)
             {
-                int max = heap[l].CompareTo(heap[r]) > 0 ? l : r;
-                if(heap[max].CompareTo(heap[root]) > 0)
+                int max = this.heap[l].CompareTo(this.heap[r]) > 0 ? l : r;
+                if(this.heap[max].CompareTo(this.heap[root]) > 0)
                 {
-                    Switch(max, root);
-                    Heapify(max);
+                    this.Switch(max, root);
+                    this.Heapify(max);
                 }
             }
-            else if (l != -1 && heap[l].CompareTo(heap[root]) > 0)
+            else if (l != -1 && this.heap[l].CompareTo(this.heap[root]) > 0)
             {
-                Switch(l, root);
-                Heapify(l);
+                this.Switch(l, root);
+                this.Heapify(l);
             }
-            else if (r != -1 && heap[r].CompareTo(heap[root]) > 0)
+            else if (r != -1 && this.heap[r].CompareTo(this.heap[root]) > 0)
             {
-                Switch(r, root);
-                Heapify(r);
+                this.Switch(r, root);
+                this.Heapify(r);
             }
         }
     }
@@ -54,36 +54,36 @@ public class MinHeap<T> : Heap<T>
 
     protected override void Heapify(int root)
     {
-        int p = Parent(root);
+        int p = this.Parent(root);
 
-        if (p != -1 && heap[p].CompareTo(heap[root]) > 0)
+        if (p != -1 && this.heap[p].CompareTo(this.heap[root]) > 0)
         {
-            Switch(p, root);
-            Heapify(p);
+            this.Switch(p, root);
+            this.Heapify(p);
         }
         else
         {
-            int l = Left(root);
-            int r = Right(root);
+            int l = this.Left(root);
+            int r = this.Right(root);
 
             if (l != -1 && r != -1)
             {
-                int max = heap[l].CompareTo(heap[r]) < 0 ? l : r;
-                if(heap[max].CompareTo(heap[root]) < 0)
+                int max = this.heap[l].CompareTo(this.heap[r]) < 0 ? l : r;
+                if(this.heap[max].CompareTo(this.heap[root]) < 0)
                 {
-                    Switch(max, root);
-                    Heapify(max);
+                    this.Switch(max, root);
+                    this.Heapify(max);
                 }
             }
-            else if (l != -1 && heap[l].CompareTo(heap[root]) < 0)
+            else if (l != -1 && this.heap[l].CompareTo(this.heap[root]) < 0)
             {
-                Switch(l, root);
-                Heapify(l);
+                this.Switch(l, root);
+                this.Heapify(l);
             }
-            else if (r != -1 && heap[r].CompareTo(heap[root]) < 0)
+            else if (r != -1 && this.heap[r].CompareTo(this.heap[root]) < 0)
             {
-                Switch(r, root);
-                Heapify(r);
+                this.Switch(r, root);
+                this.Heapify(r);
             }
         }
     }
@@ -104,32 +104,32 @@ public abstract class Heap<T>
 
     public void Add(T item)
     {
-        heap.Add(item);
-        Heapify(heap.Count - 1);
+        this.heap.Add(item);
+        this.Heapify(this.heap.Count - 1);
     }
 
     public T Top()
     {
-        T top = heap[0];
-        heap[0] = heap[heap.Count - 1];
-        heap.RemoveAt(heap.Count - 1);
-        Heapify(0);
+        T top = this.heap[0];
+        this.heap[0] = this.heap[this.heap.Count - 1];
+        this.heap.RemoveAt(this.heap.Count - 1);
+        this.Heapify(0);
         return top;
     }
 
     public T Peek()
     {
-        return heap[0];
+        return this.heap[0];
     }
 
-    public int Count { get { return heap.Count; } }
+    public int Count { get { return this.heap.Count; } }
 
     protected abstract void Heapify(int root);
 
     protected int Parent(int node)
     {
         int p = (node + 1) / 2 - 1;
-        if (p >= 0 && p < heap.Count)
+        if (p >= 0 && p < this.heap.Count)
             return p;
         return -1;
     }
@@ -137,7 +137,7 @@ public abstract class Heap<T>
     protected int Left(int node)
     {
         int l = (node + 1) * 2 - 1;
-        if (l < heap.Count)
+        if (l < this.heap.Count)
             return l;
         return -1;
     }
@@ -145,15 +145,15 @@ public abstract class Heap<T>
     protected int Right(int node)
     {
         int r = (node + 1) * 2;
-        if (r < heap.Count)
+        if (r < this.heap.Count)
             return r;
         return -1;
     }
 
     protected void Switch(int i1, int i2)
     {
-        T temp = heap[i1];
-        heap[i1] = heap[i2];
-        heap[i2] = temp;
+        T temp = this.heap[i1];
+        this.heap[i1] = this.heap[i2];
+        this.heap[i2] = temp;
     }
 }

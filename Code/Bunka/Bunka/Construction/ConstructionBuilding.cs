@@ -11,10 +11,10 @@ public class ConstructionBuilding : Building
         BunkaGame.MapManager[position] = this;
         this.ConstructionHandler = handler;
         this.ConstructionTime = constructionTime;
-        costs = new Dictionary<ResourceType, uint>();
+        this.costs = new Dictionary<ResourceType, uint>();
 
         for (int i = 0; i < costTypes.Length; i++)
-            costs.Add(costTypes[i], costAmounts[i]);
+            this.costs.Add(costTypes[i], costAmounts[i]);
     }
 
     //////////////////
@@ -24,11 +24,11 @@ public class ConstructionBuilding : Building
     public void DeliverResource(ResourceType type, uint amount)
     {
         // update requested resources
-        uint curr = costs[type];
+        uint curr = this.costs[type];
         if (amount >= curr)
-            costs.Remove(type);
+            this.costs.Remove(type);
         else
-            costs[type] = curr - amount;
+            this.costs[type] = curr - amount;
     }
 
     //////////////////
@@ -37,7 +37,7 @@ public class ConstructionBuilding : Building
 
     public bool Collecting
     {
-        get { return costs.Count > 0; }
+        get { return this.costs.Count > 0; }
     }
 
     public float ConstructionTime { get; set; }

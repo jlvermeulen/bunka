@@ -3,28 +3,23 @@
 // class for producing resources
 public class ResourceProducer
 {
-    Resource output;
-    ResourceType type;
-    uint amount;
-    float speed, timer;
-
     public ResourceProducer(ResourceType type, uint amount, float speed)
     {
-        this.type = type;
-        this.amount = amount;
-        this.speed = this.timer = speed;
-        this.output = BunkaGame.ResourceManager.CreateResource(type);
+        this.OutputType = type;
+        this.Amount = amount;
+        this.Speed = this.TimeLeft = speed;
+        this.Output = BunkaGame.ResourceManager.CreateResource(type);
     }
 
     public void Update(GameTime t)
     {
-        if (timer > 0)
-            timer -= (float)t.ElapsedGameTime.TotalSeconds;
+        if (this.TimeLeft > 0)
+            this.TimeLeft -= (float)t.ElapsedGameTime.TotalSeconds;
 
-        if (timer <= 0 && output != null)
+        if (this.TimeLeft <= 0 && this.Output != null)
         {
-            output.Amount += amount;
-            timer = speed;
+            this.Output.Amount += this.Amount;
+            this.TimeLeft = this.Speed;
         }
     }
 
@@ -32,20 +27,13 @@ public class ResourceProducer
     //  PROPERTIES  //
     //////////////////
 
-    public Resource Output
-    {
-        get { return output; }
-        set { output = value; }
-    }
+    public Resource Output { get; set; }
 
-    public ResourceType OutputType
-    {
-        get { return type; }
-    }
+    public ResourceType OutputType { get; private set; }
 
-    public float Speed
-    {
-        get { return speed; }
-        set { speed = value; }
-    }
+    public float Speed { get; set; }
+
+    public float TimeLeft { get; set; }
+
+    public uint Amount { get; set; }
 }

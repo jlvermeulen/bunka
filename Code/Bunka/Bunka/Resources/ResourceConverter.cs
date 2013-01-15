@@ -3,39 +3,34 @@
 // class for converting one resource into another
 public class ResourceConverter
 {
-    Resource[] input, output;
-    ResourceType[] inputTypes, outputTypes;
-    float speed, timer;
-    byte[] inSize, outSize;
-
     public ResourceConverter(ResourceType[] inputTypes, ResourceType[] outputTypes, byte[] inSize, byte[] outSize, float speed)
     {
-        this.inputTypes = inputTypes;
-        this.outputTypes = outputTypes;
-        this.inSize = inSize;
-        this.outSize = outSize;
-        this.speed = this.timer = speed;
-        this.input = new Resource[inputTypes.Length];
-        this.output = new Resource[outputTypes.Length];
+        this.InputTypes = inputTypes;
+        this.OutputTypes = outputTypes;
+        this.InputSize = inSize;
+        this.OutputSize = outSize;
+        this.Speed = this.TimeLeft = speed;
+        this.Input = new Resource[inputTypes.Length];
+        this.Output = new Resource[outputTypes.Length];
 
-        for (int i = 0; i < input.Length; i++)
-            input[i] = BunkaGame.ResourceManager.CreateResource(inputTypes[i]);
-        for (int i = 0; i < output.Length; i++)
-            output[i] = BunkaGame.ResourceManager.CreateResource(outputTypes[i]);
+        for (int i = 0; i < this.Input.Length; i++)
+            this.Input[i] = BunkaGame.ResourceManager.CreateResource(inputTypes[i]);
+        for (int i = 0; i < this.Output.Length; i++)
+            this.Output[i] = BunkaGame.ResourceManager.CreateResource(outputTypes[i]);
     }
 
     public void Update(GameTime t)
     {
-        if (timer > 0)
-            timer -= (float)t.ElapsedGameTime.TotalSeconds;
+        if (this.TimeLeft > 0)
+            this.TimeLeft -= (float)t.ElapsedGameTime.TotalSeconds;
 
-        if (timer <= 0 && CanConvert)
+        if (this.TimeLeft <= 0 && CanConvert)
         {
-            for (int i = 0; i < input.Length; i++)
-                input[i].Amount -= inSize[i];
-            for (int i = 0; i < output.Length; i++)
-                output[i].Amount += outSize[i];
-            timer = speed;
+            for (int i = 0; i < this.Input.Length; i++)
+                this.Input[i].Amount -= this.InputSize[i];
+            for (int i = 0; i < this.Output.Length; i++)
+                this.Output[i].Amount += this.OutputSize[i];
+            this.TimeLeft = this.Speed;
         }
     }
 
@@ -43,48 +38,28 @@ public class ResourceConverter
     //  PROPERTIES  //
     //////////////////
 
-    public Resource[] Input
-    {
-        get { return input; }
-    }
+    public Resource[] Input { get; private set; }
 
-    public Resource[] Output
-    {
-        get { return output; }
-    }
+    public Resource[] Output { get; private set; }
 
-    public ResourceType[] InputTypes
-    {
-        get { return inputTypes; }
-    }
+    public ResourceType[] InputTypes { get; private set; }
 
-    public ResourceType[] OutputTypes
-    {
-        get { return outputTypes; }
-    }
+    public ResourceType[] OutputTypes { get; private set; }
 
-    public byte[] InputSize
-    {
-        get { return inSize; }
-    }
+    public byte[] InputSize { get; private set; }
 
-    public byte[] OutputSize
-    {
-        get { return outSize; }
-    }
+    public byte[] OutputSize { get; private set; }
 
-    public float Speed
-    {
-        get { return speed; }
-        set { speed = value; }
-    }
+    public float Speed { get; set; }
 
-    bool CanConvert
+    public float TimeLeft { get; set; }
+
+    private bool CanConvert
     {
         get
         {
-            for (int i = 0; i < input.Length; i++)
-                if (input[i].Amount < inSize[i])
+            for (int i = 0; i < this.Input.Length; i++)
+                if (this.Input[i].Amount < this.InputSize[i])
                     return false;
             return true;
         }

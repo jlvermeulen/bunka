@@ -16,36 +16,36 @@ public class CarrierManager
         this.moveToIdle = new LinkedList<Carrier>();
         this.requests = new LinkedList<CarryRequest>();
 
-        CreateCarrier();
+        this.CreateCarrier();
     }
 
     public void Update(GameTime t)
     {
         // update busy carriers
-        foreach (Carrier c in carriers)
+        foreach (Carrier c in this.carriers)
             c.Update(t);
 
         // move finished carriers to idle list
-        if (moveToIdle.Count > 0)
+        if (this.moveToIdle.Count > 0)
         {
-            LinkedListNode<Carrier> node = moveToIdle.First;
+            LinkedListNode<Carrier> node = this.moveToIdle.First;
             while (node != null)
             {
-                busyCarriers.Remove(node.Value);
-                idleCarriers.Add(node.Value);
-                moveToIdle.Remove(node);
-                node = moveToIdle.First;
+                this.busyCarriers.Remove(node.Value);
+                this.idleCarriers.Add(node.Value);
+                this.moveToIdle.Remove(node);
+                node = this.moveToIdle.First;
             }
         }
 
         // handle carrier requests
-        if (requests.Count > 0)
+        if (this.requests.Count > 0)
         {
             // first request
-            LinkedListNode<CarryRequest> node = requests.First;
+            LinkedListNode<CarryRequest> node = this.requests.First;
 
             // check if carrier is available and if there is still a request
-            while (idleCarriers.Count > 0 && node != null)
+            while (this.idleCarriers.Count > 0 && node != null)
             {
                 // retrieve list of free resources of the desired type
                 // TODO: determine which resource is the closest to the destination
@@ -64,32 +64,32 @@ public class CarrierManager
                         {
                             // give resource to carrier
                             // TODO: determine closest carrier
-                            idleCarriers[0].Carrying = node.Value.ResourceType;
-                            idleCarriers[0].Destination = node.Value.Destination;
+                            this.idleCarriers[0].Carrying = node.Value.ResourceType;
+                            this.idleCarriers[0].Destination = node.Value.Destination;
 
                             // resource amount is large enough
                             if (r.Amount >= node.Value.Amount)
                             {
-                                idleCarriers[0].Amount = node.Value.Amount;
+                                this.idleCarriers[0].Amount = node.Value.Amount;
                                 r.Amount -= node.Value.Amount;
                             }
                             // resource amount is insufficient
                             else
                             {
                                 // create new request for remainder of requested resource
-                                RequestCarrier(new CarryRequest(node.Value.ResourceType, node.Value.Amount - r.Amount, node.Value.Destination));
+                                this.RequestCarrier(new CarryRequest(node.Value.ResourceType, node.Value.Amount - r.Amount, node.Value.Destination));
 
-                                idleCarriers[0].Amount = r.Amount;
+                                this.idleCarriers[0].Amount = r.Amount;
                                 r.Amount = 0;
                             }                            
 
                             // move carrier to busy carriers list
-                            busyCarriers.Add(idleCarriers[0]);
-                            idleCarriers.RemoveAt(0);
+                            this.busyCarriers.Add(this.idleCarriers[0]);
+                            this.idleCarriers.RemoveAt(0);
 
                             // move to next request
-                            requests.Remove(node);
-                            node = requests.First;
+                            this.requests.Remove(node);
+                            node = this.requests.First;
                             broken = true;
                             break;
                         }
@@ -112,18 +112,18 @@ public class CarrierManager
     public Carrier CreateCarrier()
     {
         Carrier temp = new Carrier(new Vector2(0, 0));
-        carriers.Add(temp);
-        idleCarriers.Add(temp);
+        this.carriers.Add(temp);
+        this.idleCarriers.Add(temp);
         return temp;
     }
 
     public void RequestCarrier(CarryRequest request)
     {
-        requests.AddLast(request);
+        this.requests.AddLast(request);
     }
 
     public void MoveToIdle(Carrier carrier)
     {
-        moveToIdle.AddLast(carrier);
+        this.moveToIdle.AddLast(carrier);
     }
 }

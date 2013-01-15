@@ -1,18 +1,14 @@
 ﻿public struct BuildRequest
 {
-    ConstructionBuilding location;
-
     public BuildRequest(ConstructionBuilding location)
+        : this()
     {
-        this.location = location;
+        this.Location = location;
     }
 
     //////////////////
     //  PROPERTIES  //
     //////////////////
 
-    public ConstructionBuilding Location
-    {
-        get { return location; }
-    }
+    public ConstructionBuilding Location { get; private set; }
 }

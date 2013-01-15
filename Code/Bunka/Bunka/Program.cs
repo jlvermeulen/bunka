@@ -1,15 +1,15 @@
 using System;
 
 #if WINDOWS || XBOX
-    static class Program
+static class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        using (Bunka game = new Bunka())
         {
-            using (Bunka game = new Bunka())
-            {
-                game.Run();
-            }
+            game.Run();
         }
     }
+}
 #endif
 

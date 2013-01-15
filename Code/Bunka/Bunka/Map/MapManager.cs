@@ -11,7 +11,7 @@ public class MapManager
     {
         this.Dimensions = new CPoint(20, 20);
         this.CellSize = 10;
-        mapArray = new Building[this.Dimensions.X, this.Dimensions.Y];
+        this.mapArray = new Building[this.Dimensions.X, this.Dimensions.Y];
         Console.SetBufferSize(201, 500);
     }
 

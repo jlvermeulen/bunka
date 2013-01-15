@@ -9,7 +9,7 @@ public class BuildingProduction : Building
         : base(type, position)
     {
         this.ResourceProducers = new ResourceProducer[] { producers };
-        InitialiseProducers();
+        this.InitialiseProducers();
     }
 
     // overload for multiple producers
@@ -17,7 +17,7 @@ public class BuildingProduction : Building
         : base(type, position)
     {
         this.ResourceProducers = producers;
-        InitialiseProducers();
+        this.InitialiseProducers();
     }
 
     public void Update(GameTime t)
@@ -30,7 +30,7 @@ public class BuildingProduction : Building
     //   METHODS    //
     //////////////////
 
-    void InitialiseProducers()
+    private void InitialiseProducers()
     {
         for (int i = 0; i < ResourceProducers.Length; i++)
         {

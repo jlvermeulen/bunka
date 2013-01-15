@@ -1,32 +1,20 @@
 ﻿public struct CarryRequest
 {
-    ResourceType type;
-    uint amount;
-    Building destination;
-
     public CarryRequest(ResourceType type, uint amount, Building destination)
+        : this()
     {
-        this.type = type;
-        this.amount = amount;
-        this.destination = destination;
+        this.ResourceType = type;
+        this.Amount = amount;
+        this.Destination = destination;
     }
 
     //////////////////
     //  PROPERTIES  //
     //////////////////
 
-    public ResourceType ResourceType
-    {
-        get { return type; }
-    }
+    public ResourceType ResourceType { get; private set; }
 
-    public uint Amount
-    {
-        get { return amount; }
-    }
+    public uint Amount { get; private set; }
 
-    public Building Destination
-    {
-        get { return destination; }
-    }
+    public Building Destination { get; private set; }
 }
