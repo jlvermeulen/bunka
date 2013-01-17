@@ -6,3 +6,5 @@ We currently have:
 - Carriers for moving resources around
 - Building that produce or convert resources
 - Builders that construct buildings
+- A grid that contains buildings
+- Pathfinding

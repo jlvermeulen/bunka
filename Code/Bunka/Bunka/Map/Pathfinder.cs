@@ -83,33 +83,14 @@ public static class Pathfinder
             return this.F - other.F;
         }
 
-        public CPoint Position
-        {
-            get;
-            set;
-        }
+        public CPoint Position { get; set; }
 
-        public int F
-        {
-            get { return G + H; }
-        }
+        public int F { get { return G + H; } }
 
-        public int H
-        {
-            get;
-            set;
-        }
+        public int H { get; set; }
 
-        public int G
-        {
-            get;
-            set;
-        }
+        public int G { get; set; }
 
-        public PathNode Parent
-        {
-            get;
-            set;
-        }
+        public PathNode Parent { get; set; }
     }
 }
