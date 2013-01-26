@@ -11,6 +11,9 @@ public class Bunka : Game
     {
         this.graphics = new GraphicsDeviceManager(this);
         this.Content.RootDirectory = "Content";
+        this.graphics.PreferredBackBufferWidth = 1280;
+        this.graphics.PreferredBackBufferHeight = 720;
+        BunkaGame.Instantiate(this.Content);
         BunkaGame.ResourceManager.AddInitialResources();
     }
 
@@ -18,6 +21,7 @@ public class Bunka : Game
     {
         base.Initialize();
         this.spriteBatch = new SpriteBatch(GraphicsDevice);
+        this.IsMouseVisible = true;
     }
 
     protected override void LoadContent()
@@ -34,7 +38,9 @@ public class Bunka : Game
     protected override void Draw(GameTime t)
     {
         GraphicsDevice.Clear(Color.Black);
+        spriteBatch.Begin();
         BunkaGame.Draw(spriteBatch);
+        spriteBatch.End();
         base.Draw(t);
     }
 }

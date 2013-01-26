@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 // all resource types
 public enum ResourceType { Wood, Stone, Coal, Fish, IronOre, IronBar, Planks, None }
@@ -34,10 +35,20 @@ public class ResourceManager
 
     public void Update(GameTime t)
     {
-        // test
-        Console.Clear();
-        foreach (KeyValuePair<ResourceType, uint> pair in this.ResourceCounts)
-            Console.WriteLine(pair.Key + "\t | \t" + pair.Value);
+
+    }
+
+    public void Draw(SpriteBatch s)
+    {
+        Vector2 name = new Vector2(800, 50);
+        Vector2 count = new Vector2(1000, 50);
+        int i = 0;
+        foreach(KeyValuePair<ResourceType, uint> kvp in this.ResourceCounts)
+        {
+            s.DrawString(BunkaGame.ContentManager.Load<SpriteFont>("Fonts/Buildings"), kvp.Key.ToString(), name + new Vector2(0, i * 20), Color.White);
+            s.DrawString(BunkaGame.ContentManager.Load<SpriteFont>("Fonts/Buildings"), kvp.Value.ToString(), count + new Vector2(0, i * 20), Color.White);
+            i++;
+        }
     }
 
     //////////////////

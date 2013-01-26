@@ -1,18 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 // class for managing the map of a game
 public class MapManager
 {
     Building[,] mapArray;
+    char[,] drawArray;
+    LinkedList<CPoint> path;
+
+    private static readonly Dictionary<BuildingType, char> buildingChars = new Dictionary<BuildingType, char>
+                                                                            {
+                                                                                {BuildingType.CoalMine, 'c'},
+                                                                                {BuildingType.CokingPlant, 'C'},
+                                                                                {BuildingType.Construction, 'x'},
+                                                                                {BuildingType.Fishery, 'F'},
+                                                                                {BuildingType.IronMine, 'i'},
+                                                                                {BuildingType.IronSmelter, 'I'},
+                                                                                {BuildingType.Lumberjack, 'L'},
+                                                                                {BuildingType.Quarry, 'Q'},
+                                                                                {BuildingType.Sawmill, 'S'}
+                                                                            };
 
     public MapManager()
     {
         this.Dimensions = new CPoint(20, 20);
-        this.CellSize = 10;
+        this.CellSize = 100;
         this.mapArray = new Building[this.Dimensions.X, this.Dimensions.Y];
-        Console.SetBufferSize(201, 500);
+        this.drawArray = new char[this.Dimensions.X, this.Dimensions.Y];
+    }
+
+    public void Update(GameTime t)
+    {
+        if (BunkaGame.InputManager.IsKeyPressed(Keys.Back))
+            this.path = null;
+        this.FillMap();
+    }
+
+    public void Draw(SpriteBatch s)
+    {
+        Vector2 root = new Vector2(75, 50);
+        for (int i = 0; i < this.Dimensions.X; i++)
+            s.DrawString(BunkaGame.ContentManager.Load<SpriteFont>("Fonts/Buildings"), i.ToString(), root + new Vector2(i * 30, -25), Color.White);
+        for (int j = 0; j < this.Dimensions.Y; j++)
+            s.DrawString(BunkaGame.ContentManager.Load<SpriteFont>("Fonts/Buildings"), j.ToString(), root + new Vector2(-35, j * 20), Color.White);
+        for(int i = 0; i < this.Dimensions.X; i++)
+            for(int j = 0;j < this.Dimensions.Y;j++)
+                s.DrawString(BunkaGame.ContentManager.Load<SpriteFont>("Fonts/Buildings"), this.drawArray[i, j].ToString(), root + new Vector2(i * 30, j * 20), Color.White);
     }
 
     //////////////////
@@ -22,7 +58,7 @@ public class MapManager
     // checks if index falls within the bounds of the map
     public bool IsValidIndex(int x, int y)
     {
-        return x < mapArray.GetLength(0) && y < mapArray.GetLength(1) && x >= 0 && y >= 0;
+        return x < this.mapArray.GetLength(0) && y < this.mapArray.GetLength(1) && x >= 0 && y >= 0;
     }
 
     public bool IsValidIndex(CPoint p)
@@ -33,7 +69,7 @@ public class MapManager
     // check if position falls within the bounds of the map
     public bool IsPositionOnMap(Vector2 pos)
     {
-        return pos.X < mapArray.GetLength(0) * this.CellSize && pos.Y < mapArray.GetLength(1) * this.CellSize && pos.X >= 0 && pos.Y >= 0;
+        return pos.X < this.mapArray.GetLength(0) * this.CellSize && pos.Y < this.mapArray.GetLength(1) * this.CellSize && pos.X >= 0 && pos.Y >= 0;
     }
 
     // returns the position of the centre of the cell at the specified index
@@ -42,6 +78,11 @@ public class MapManager
         if (!IsValidIndex(x, y))
             return new Vector2(-1, -1);
         return new Vector2(x * this.CellSize + this.CellSize / 2, y * this.CellSize + this.CellSize / 2);
+    }
+
+    public Vector2 IndexToCellCentre(CPoint p)
+    {
+        return IndexToCellCentre(p.X, p.Y);
     }
 
     // returns the index of the cell that contains the specified position
@@ -93,6 +134,28 @@ public class MapManager
             if (this[p] == null)
                 result.Add(p);
         return result;
+    }
+
+    public void FillMap()
+    {
+        for(int i = 0; i < this.Dimensions.X; i++)
+            for (int j = 0; j < this.Dimensions.Y; j++)
+            {
+                if (this[i, j] == null)
+                    this.drawArray[i, j] = '-';
+                else
+                    this.drawArray[i, j] = buildingChars[this[i, j].BuildingType];
+            }
+
+        if (this.path != null)
+            foreach (CPoint p in path)
+                if (this[p] == null)
+                    this.drawArray[p.X, p.Y] = '#';
+    }
+
+    public void FindPath(CPoint start, CPoint end)
+    {
+        this.path = Pathfinder.GetPath(start, end);
     }
 
     //////////////////

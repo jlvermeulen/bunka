@@ -15,7 +15,7 @@ public static class Pathfinder
         openDict.Add(from, node);
 
         PathNode last = null;
-        List<CPoint> reachable;
+        List<CPoint> neighbours;
         while (open.Count > 0)
         {
             PathNode best = open.Top();
@@ -29,10 +29,10 @@ public static class Pathfinder
                 break;
             }
 
-            reachable = BunkaGame.MapManager.FreeNeighbours(best.Position);
-            foreach (CPoint p in reachable)
+            neighbours = BunkaGame.MapManager.Neighbours(best.Position);
+            foreach (CPoint p in neighbours)
             {
-                if (closed.Contains(p))
+                if (closed.Contains(p) || (BunkaGame.MapManager[p] != null && p != dest))
                     continue;
 
                 if (openDict.TryGetValue(p, out node))

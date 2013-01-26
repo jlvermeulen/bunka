@@ -7,7 +7,7 @@ public class Resource
     {
         // create resource count if it is the first resource of its kind
         if(!BunkaGame.ResourceManager.ResourceCounts.ContainsKey(type))
-            BunkaGame.ResourceManager.ResourceCounts.Add(type, amount);
+            BunkaGame.ResourceManager.ResourceCounts.Add(type, 0);
 
         this.ResourceType = type;
         this.Amount = amount;

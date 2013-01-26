@@ -1,7 +1,7 @@
 ﻿// parent class for all buildings
 public abstract class Building
 {
-    public Building(BuildingType type, CPoint position)
+    protected Building(BuildingType type, CPoint position)
     {
         BunkaGame.MapManager[position] = this;
         this.BuildingType = type;

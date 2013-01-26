@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 // class for carrier administration
 public class CarrierManager
@@ -105,13 +106,19 @@ public class CarrierManager
         }
     }
 
+    public void Draw(SpriteBatch s)
+    {
+        foreach (Carrier c in carriers)
+            c.Draw(s);
+    }
+
     //////////////////
     //   METHODS    //
     //////////////////
 
     public Carrier CreateCarrier()
     {
-        Carrier temp = new Carrier(new Vector2(0, 0));
+        Carrier temp = new Carrier(new Vector2(50, 50), 3);
         this.carriers.Add(temp);
         this.idleCarriers.Add(temp);
         return temp;

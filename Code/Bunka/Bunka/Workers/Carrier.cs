@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 // class for resource carriers
-public class Carrier
+public class Carrier : Worker
 {
-    public Carrier(Vector2 position)
+    public Carrier(Vector2 position, float maxVelocity)
+        : base(position, maxVelocity)
     {
         this.Carrying = ResourceType.None;
     }
@@ -12,8 +14,8 @@ public class Carrier
     {
         if (this.Destination != null)
         {
-            // TODO: add check to see if carrier has arrived at destination
-            if (true)
+            // arrived at destination
+            if (path.Count == 0)
             {
                 // check if building is a conversion building
                 if (this.Destination.BuildingType > BuildingType.CONVERSION)
@@ -30,7 +32,17 @@ public class Carrier
                 // request moving to idle carriers list
                 BunkaGame.CarrierManager.MoveToIdle(this);
             }
+            else
+            {
+                UpdateAimAndVelocity();
+                this.Position += this.Aim * this.Velocity;
+            }
         }
+    }
+
+    public void Draw(SpriteBatch s)
+    {
+        s.DrawString(BunkaGame.ContentManager.Load<SpriteFont>("Fonts/Buildings"), "$", new Vector2(this.Position.X / 100 * 30 + 60, this.Position.Y / 100 * 20 + 40), Color.Red);
     }
 
     //////////////////
@@ -39,9 +51,5 @@ public class Carrier
 
     public ResourceType Carrying { get; set; }
 
-    public Building Destination { get; set; }
-
     public uint Amount { get; set; }
-
-    public Vector2 Position { get; set; }
 }

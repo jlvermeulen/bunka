@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 // class for managing construction of buildings
 public class ConstructionManager
@@ -51,18 +52,6 @@ public class ConstructionManager
             }
         }
 
-        // process new construction requests
-        if (this.constructionRequests.Count > 0)
-        {
-            LinkedListNode<ConstructionRequest> node = this.constructionRequests.First;
-            while (node != null)
-            {
-                this.collect.Add(BunkaGame.BuildingManager.BuildingLoader.CreateConstructionRequest(node.Value.BuildingType, node.Value.Position));
-                this.constructionRequests.Remove(node);
-                node = this.constructionRequests.First;
-            }
-        }
-
         // move buildings that are done collecting to the build list and request a builder
         for (int i = this.collect.Count - 1; i >= 0; i--)
             if (!this.collect[i].Location.Collecting)
@@ -82,7 +71,7 @@ public class ConstructionManager
             while (node != null && this.idleBuilders.Count > 0)
             {
                 // give order to builder and move it from idle to busy
-                this.idleBuilders[0].CurrentConstruction = node.Value.Location;
+                this.idleBuilders[0].Destination = node.Value.Location;
                 this.busyBuilders.Add(idleBuilders[0]);
                 this.idleBuilders.RemoveAt(0);
 
@@ -92,6 +81,12 @@ public class ConstructionManager
         }
     }
 
+    public void Draw(SpriteBatch s)
+    {
+        foreach (Builder b in this.builders)
+            b.Draw(s);
+    }
+
     //////////////////
     //   METHODS    //
     //////////////////
@@ -99,12 +94,12 @@ public class ConstructionManager
     public void ConstructBuilding(BuildingType type, CPoint position)
     {
         if (BunkaGame.MapManager.IsValidIndex(position) && BunkaGame.MapManager[position] == null)
-            this.constructionRequests.AddLast(new ConstructionRequest(type, position));
+            this.collect.Add(BunkaGame.BuildingManager.BuildingLoader.CreateConstructionRequest(type, position));
     }
 
     public Builder CreateBuilder()
     {
-        Builder temp = new Builder(new Vector2(0, 0));
+        Builder temp = new Builder(new Vector2(50, 50), 3);
         this.builders.Add(temp);
         this.idleBuilders.Add(temp);
         return temp;

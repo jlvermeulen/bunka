@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
 
 public struct CPoint : IComparable<CPoint>, IEquatable<CPoint>
 {

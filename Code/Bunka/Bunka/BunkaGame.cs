@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 // class for managing a single game
 class BunkaGameInstance
 {
-    public BunkaGameInstance()
+    public BunkaGameInstance(ContentManager content)
     {
         this.InputManager = new InputManager();
         this.ResourceManager = new ResourceManager();
@@ -12,6 +13,7 @@ class BunkaGameInstance
         this.ConstructionManager = new ConstructionManager();
         this.CarrierManager = new CarrierManager();
         this.MapManager = new MapManager();
+        this.ContentManager = content;
         this.DebugConsole = new DebugConsole();
     }
 
@@ -22,12 +24,16 @@ class BunkaGameInstance
         this.BuildingManager.Update(t);
         this.ConstructionManager.Update(t);
         this.CarrierManager.Update(t);
+        this.MapManager.Update(t);
         this.DebugConsole.Update(t);
     }
 
     public void Draw(SpriteBatch s)
     {
-
+        this.MapManager.Draw(s);
+        this.ResourceManager.Draw(s);
+        this.ConstructionManager.Draw(s);
+        this.CarrierManager.Draw(s);
     }
 
     public ResourceManager ResourceManager { get; private set; }
@@ -42,12 +48,19 @@ class BunkaGameInstance
 
     public InputManager InputManager { get; private set; }
 
+    public ContentManager ContentManager { get; private set; }
+
     public DebugConsole DebugConsole { get; private set; }
 }
 
 public class BunkaGame
 {
-    private static readonly BunkaGameInstance instance = new BunkaGameInstance();
+    private static BunkaGameInstance instance;
+
+    public static void Instantiate(ContentManager content)
+    {
+        instance = new BunkaGameInstance(content);
+    }
 
     public static void Update(GameTime t)
     {
@@ -92,5 +105,10 @@ public class BunkaGame
     public static DebugConsole DebugConsole
     {
         get { return instance.DebugConsole; }
+    }
+
+    public static ContentManager ContentManager
+    {
+        get { return instance.ContentManager; }
     }
 }
