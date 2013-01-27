@@ -6,10 +6,10 @@ public class BuildingConversion : Building
 {
     Dictionary<ResourceType, uint> requestedResources;
 
-    public BuildingConversion(BuildingType type, ResourceConverter converter, CPoint position)
+    public BuildingConversion(BuildingType type, CPoint position, ResourceType[] input, ResourceType[] output, byte[] inSize, byte[] outSize, float speed)
         : base(type, position)
     {
-        this.ResourceConverter = converter;
+        this.ResourceConverter = BunkaGame.ResourceManager.CreateResourceConverter(input, output, inSize, outSize, speed, this);
         this.requestedResources = new Dictionary<ResourceType, uint>();
         this.InitialiseConverters();
     }
@@ -31,7 +31,17 @@ public class BuildingConversion : Building
     //   METHODS    //
     //////////////////
 
-    public void DeliverResource(ResourceType type, uint amount)
+    public override void CollectResource(ResourceType type, uint amount)
+    {
+        foreach (Resource r in this.ResourceConverter.Output)
+            if (r.ResourceType == type)
+            {
+                r.Amount -= amount;
+                break;
+            }
+    }
+
+    public override void DeliverResource(ResourceType type, uint amount)
     {
         // update requested resources
         uint curr = this.requestedResources[type];

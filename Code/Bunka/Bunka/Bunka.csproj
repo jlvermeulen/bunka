@@ -80,7 +80,9 @@
     <Compile Include="Buildings\BuildingManager.cs" />
     <Compile Include="Buildings\BuildingConversion.cs" />
     <Compile Include="Buildings\BuildingProduction.cs" />
+    <Compile Include="Special Buildings\Stockpile.cs" />
     <Compile Include="BunkaGame.cs" />
+    <Compile Include="Carriers\CarryInfo.cs" />
     <Compile Include="Workers\Carrier.cs" />
     <Compile Include="Carriers\CarrierManager.cs" />
     <Compile Include="Carriers\CarryRequest.cs" />

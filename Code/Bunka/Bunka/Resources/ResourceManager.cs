@@ -22,17 +22,6 @@ public class ResourceManager
         this.FreeResources = new Dictionary<ResourceType, LinkedList<Resource>>();
     }
 
-    public void AddInitialResources()
-    {
-        LinkedList<Resource> herp = new LinkedList<Resource>();
-        herp.AddFirst(new Resource(ResourceType.Wood, 10));
-        this.FreeResources.Add(ResourceType.Wood, herp);
-
-        LinkedList<Resource> derp = new LinkedList<Resource>();
-        derp.AddFirst(new Resource(ResourceType.Stone, 10));
-        this.FreeResources.Add(ResourceType.Stone, derp);
-    }
-
     public void Update(GameTime t)
     {
 
@@ -67,32 +56,32 @@ public class ResourceManager
         return count;
     }
 
-    public Resource CreateResource(ResourceType type, uint amount = 0)
+    public Resource CreateResource(ResourceType type, uint amount, Building location)
     {
-        Resource resource = new Resource(type, amount);
-        this.resources.Add(resource);
-        return resource;
+        Resource temp = new Resource(type, amount, location);
+        this.resources.Add(temp);
+        return temp;
     }
 
-    public ResourceProducer CreateResourceProducer(ResourceType type, uint amount, float speed)
+    public ResourceProducer CreateResourceProducer(ResourceType type, uint amount, float speed, Building location)
     {
-        ResourceProducer temp = new ResourceProducer(type, amount, speed);
+        ResourceProducer temp = new ResourceProducer(type, amount, speed, location);
         this.producers.Add(temp);
         return temp;
     }
 
     // overload for single input and output
-    public ResourceConverter CreateResourceConverter(ResourceType input, ResourceType output, byte inSize, byte outSize, float speed)
+    public ResourceConverter CreateResourceConverter(ResourceType input, ResourceType output, byte inSize, byte outSize, float speed, Building location)
     {
-        ResourceConverter temp = new ResourceConverter(new ResourceType[] { input }, new ResourceType[] { output }, new byte[] { inSize }, new byte[] { outSize }, speed);
+        ResourceConverter temp = new ResourceConverter(new ResourceType[] { input }, new ResourceType[] { output }, new byte[] { inSize }, new byte[] { outSize }, speed, location);
         this.converters.Add(temp);
         return temp;
     }
 
     // overload for multiple inputs and outputs
-    public ResourceConverter CreateResourceConverter(ResourceType[] input, ResourceType[] output, byte[] inSize, byte[] outSize, float speed)
+    public ResourceConverter CreateResourceConverter(ResourceType[] input, ResourceType[] output, byte[] inSize, byte[] outSize, float speed, Building location)
     {
-        ResourceConverter temp = new ResourceConverter(input, output, inSize, outSize, speed);
+        ResourceConverter temp = new ResourceConverter(input, output, inSize, outSize, speed, location);
         this.converters.Add(temp);
         return temp;
     }

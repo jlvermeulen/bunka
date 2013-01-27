@@ -24,16 +24,7 @@ public class ConstructionManager
 
         CreateBuilder();
     }
-    /*
-    public void AddInitialConstruction()
-    {
-        ConstructBuilding(BuildingType.Lumberjack);
-        ConstructBuilding(BuildingType.Quarry);
-        ConstructBuilding(BuildingType.CoalMine);
-        ConstructBuilding(BuildingType.IronMine);
-        ConstructBuilding(BuildingType.IronSmelter);
-    }
-    */
+
     public void Update(GameTime t)
     {
         foreach (Builder b in this.builders)

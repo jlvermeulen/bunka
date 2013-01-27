@@ -63,26 +63,21 @@ public class CarrierManager
                         // check if resource is not empty
                         if (r.Amount > 0)
                         {
-                            // give resource to carrier
-                            // TODO: determine closest carrier
-                            this.idleCarriers[0].Carrying = node.Value.ResourceType;
-                            this.idleCarriers[0].Destination = node.Value.Destination;
-
+                            uint amount;
                             // resource amount is large enough
                             if (r.Amount >= node.Value.Amount)
-                            {
-                                this.idleCarriers[0].Amount = node.Value.Amount;
-                                r.Amount -= node.Value.Amount;
-                            }
+                                amount = node.Value.Amount;
                             // resource amount is insufficient
                             else
                             {
+                                amount = r.Amount;
                                 // create new request for remainder of requested resource
                                 this.RequestCarrier(new CarryRequest(node.Value.ResourceType, node.Value.Amount - r.Amount, node.Value.Destination));
+                            }   
 
-                                this.idleCarriers[0].Amount = r.Amount;
-                                r.Amount = 0;
-                            }                            
+                            // give move request to carrier
+                            // TODO: determine closest carrier
+                            this.idleCarriers[0].CarryInfo = new CarryInfo(r.ResourceType, amount, r.Location, node.Value.Destination);
 
                             // move carrier to busy carriers list
                             this.busyCarriers.Add(this.idleCarriers[0]);

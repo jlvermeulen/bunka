@@ -76,7 +76,7 @@ public class BuildingLoader
             return CreateConversionBuilding(type, position);
         else if (type > BuildingType.PRODUCTION)
             return CreateProductionBuilding(type, position);
-        else 
+        else
             return null;
     }
 
@@ -112,10 +112,7 @@ public class BuildingLoader
         for (int i = 0; i < iAmounts.Length; i++)
             inAmounts[i] = byte.Parse(iAmounts[i]);
 
-        // create required resource converter
-        ResourceConverter converter = BunkaGame.ResourceManager.CreateResourceConverter(inTypes, outTypes, inAmounts, outAmounts, speed);
-
-        return new BuildingConversion(type, converter, position);
+        return new BuildingConversion(type, position, inTypes, outTypes, inAmounts, outAmounts, speed);
     }
 
     // method for creating production buildings
@@ -128,12 +125,15 @@ public class BuildingLoader
         string[] amounts = building[1][1].Split(',');
         int speed = int.Parse(building[2][1]);
 
-        // create required resource producers
-        List<ResourceProducer> producers = new List<ResourceProducer>();
+        ResourceType[] rTypes = new ResourceType[types.Length];
+        uint[] rAmounts = new uint[types.Length];
         for (int i = 0; i < types.Length; i++)
-            producers.Add(BunkaGame.ResourceManager.CreateResourceProducer((ResourceType)(Enum.Parse(typeof(ResourceType), types[i])), uint.Parse(amounts[i]), speed));
+        {
+            rTypes[i] = (ResourceType)(Enum.Parse(typeof(ResourceType), types[i]));
+            rAmounts[i] = uint.Parse(amounts[i]);
+        }
 
-        return new BuildingProduction(type, producers.ToArray(), position);
+        return new BuildingProduction(type, position, rTypes, rAmounts, speed);
     }
 
     private List<string> LoadDirectory(string root)

@@ -5,18 +5,21 @@ using Microsoft.Xna.Framework;
 public class BuildingProduction : Building
 {
     // overload for single producer
-    public BuildingProduction(BuildingType type, ResourceProducer producers, CPoint position)
+    public BuildingProduction(BuildingType type, CPoint position, ResourceType rType, uint amount, float speed)
         : base(type, position)
     {
-        this.ResourceProducers = new ResourceProducer[] { producers };
+        this.ResourceProducers = new ResourceProducer[] { BunkaGame.ResourceManager.CreateResourceProducer(rType, amount, speed, this) };
         this.InitialiseProducers();
     }
 
     // overload for multiple producers
-    public BuildingProduction(BuildingType type, ResourceProducer[] producers, CPoint position)
+    public BuildingProduction(BuildingType type, CPoint position, ResourceType[] rTypes, uint[] amounts, float speed)
         : base(type, position)
     {
-        this.ResourceProducers = producers;
+        this.ResourceProducers = new ResourceProducer[rTypes.Length];
+        for (int i = 0; i < rTypes.Length; i++)
+            this.ResourceProducers[i] = BunkaGame.ResourceManager.CreateResourceProducer(rTypes[i], amounts[i], speed, this);
+
         this.InitialiseProducers();
     }
 
@@ -29,6 +32,16 @@ public class BuildingProduction : Building
     //////////////////
     //   METHODS    //
     //////////////////
+
+    public override void CollectResource(ResourceType type, uint amount)
+    {
+        foreach (ResourceProducer producer in this.ResourceProducers)
+            if (producer.OutputType == type)
+            {
+                producer.Output.Amount -= amount;
+                break;
+            }
+    }
 
     private void InitialiseProducers()
     {

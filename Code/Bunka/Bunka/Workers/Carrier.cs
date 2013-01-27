@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 // class for resource carriers
 public class Carrier : Worker
 {
+    CarryInfo carryInfo;
+
     public Carrier(Vector2 position, float maxVelocity)
         : base(position, maxVelocity)
     {
@@ -17,20 +19,28 @@ public class Carrier : Worker
             // arrived at destination
             if (path.Count == 0)
             {
-                // check if building is a conversion building
-                if (this.Destination.BuildingType > BuildingType.CONVERSION)
-                    ((BuildingConversion)this.Destination).DeliverResource(this.Carrying, this.Amount);
-                // otherwise it is a construction building
+                // collect resource
+                if (this.Carrying == ResourceType.None)
+                {
+                    this.CarryInfo.Origin.CollectResource(this.CarryInfo.ResourceType, this.CarryInfo.Amount);
+                    this.Carrying = this.CarryInfo.ResourceType;
+                    this.Amount = this.CarryInfo.Amount;
+                    this.Destination = this.CarryInfo.Destination;
+                }
+                // deliver resource
                 else
-                    ((ConstructionBuilding)this.Destination).DeliverResource(this.Carrying, this.Amount);
+                {
+                    this.Destination.DeliverResource(this.CarryInfo.ResourceType, this.CarryInfo.Amount);
 
-                // reset carrier members
-                this.Amount = 0;
-                this.Destination = null;
-                this.Carrying = ResourceType.None;
+                    // reset carrier members
+                    this.Destination = null;
+                    this.CarryInfo = null;
+                    this.Carrying = ResourceType.None;
+                    this.Amount = 0;
 
-                // request moving to idle carriers list
-                BunkaGame.CarrierManager.MoveToIdle(this);
+                    // request moving to idle carriers list
+                    BunkaGame.CarrierManager.MoveToIdle(this);
+                }
             }
             else
             {
@@ -48,6 +58,20 @@ public class Carrier : Worker
     //////////////////
     //  PROPERTIES  //
     //////////////////
+
+    public CarryInfo CarryInfo
+    {
+        get { return this.carryInfo; }
+        set
+        {
+            this.carryInfo = value;
+            if (value != null)
+            {
+                this.Destination = value.Origin;
+                this.path = Pathfinder.GetPath(BunkaGame.MapManager.PositionToIndex(this.Position), value.Origin.Position);
+            }
+        }
+    }
 
     public ResourceType Carrying { get; set; }
 

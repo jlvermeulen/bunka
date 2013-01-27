@@ -2,36 +2,29 @@
 using Microsoft.Xna.Framework;
 
 // all building types
-public enum BuildingType { Construction, PRODUCTION, Quarry, Lumberjack, CoalMine, IronMine, Fishery, CONVERSION, CokingPlant, Sawmill, IronSmelter };
+public enum BuildingType { Construction, Stockpile, PRODUCTION, Quarry, Lumberjack, CoalMine, IronMine, Fishery, CONVERSION, CokingPlant, Sawmill, IronSmelter };
 
 // class for building administration
 public class BuildingManager
 {
     List<BuildingProduction> production;
     List<BuildingConversion> conversion;
+    List<Building> special;
 
     public BuildingManager()
     {
         this.BuildingLoader = new BuildingLoader();
         this.production = new List<BuildingProduction>();
         this.conversion = new List<BuildingConversion>();
-        // Test();
+        this.special = new List<Building>();
     }
-    /*
-    public void Test()
+
+    public void BuildStockpile()
     {
-        CreateBuilding(BuildingType.Quarry);
-        CreateBuilding(BuildingType.Lumberjack);
-        CreateBuilding(BuildingType.Lumberjack);
-        CreateBuilding(BuildingType.Lumberjack);
-        CreateBuilding(BuildingType.CokingPlant);
-        CreateBuilding(BuildingType.CoalMine);
-        CreateBuilding(BuildingType.Fishery);
-        CreateBuilding(BuildingType.IronMine);
-        CreateBuilding(BuildingType.Sawmill);
-        CreateBuilding(BuildingType.IronSmelter);
+        this.special.Add(new Stockpile(new CPoint(2, 2)));
+        BunkaGame.MapManager[2, 2] = special[0];
     }
-    */
+
     public void Update(GameTime t)
     {
         foreach (BuildingProduction p in this.production)
@@ -54,8 +47,10 @@ public class BuildingManager
 
         if (type > BuildingType.CONVERSION)
             this.conversion.Add((BuildingConversion)building);
-        else
+        else if (type > BuildingType.PRODUCTION)
             this.production.Add((BuildingProduction)building);
+        else
+            this.special.Add(building);
     }
 
     //////////////////

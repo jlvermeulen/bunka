@@ -4,7 +4,7 @@ We currently have:
 
 - Resources classes, which represent an amount of a resource at a specific place
 - Carriers for moving resources around
-- Building that produce or convert resources
+- Buildings that produce or convert resources
 - Builders that construct buildings
 - A grid that contains buildings
 - Pathfinding

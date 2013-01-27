@@ -3,7 +3,7 @@
 // class for converting one resource into another
 public class ResourceConverter
 {
-    public ResourceConverter(ResourceType[] inputTypes, ResourceType[] outputTypes, byte[] inSize, byte[] outSize, float speed)
+    public ResourceConverter(ResourceType[] inputTypes, ResourceType[] outputTypes, byte[] inSize, byte[] outSize, float speed, Building location)
     {
         this.InputTypes = inputTypes;
         this.OutputTypes = outputTypes;
@@ -14,9 +14,9 @@ public class ResourceConverter
         this.Output = new Resource[outputTypes.Length];
 
         for (int i = 0; i < this.Input.Length; i++)
-            this.Input[i] = BunkaGame.ResourceManager.CreateResource(inputTypes[i]);
+            this.Input[i] = BunkaGame.ResourceManager.CreateResource(inputTypes[i], 0, location);
         for (int i = 0; i < this.Output.Length; i++)
-            this.Output[i] = BunkaGame.ResourceManager.CreateResource(outputTypes[i]);
+            this.Output[i] = BunkaGame.ResourceManager.CreateResource(outputTypes[i], 0, location);
     }
 
     public void Update(GameTime t)
@@ -37,6 +37,8 @@ public class ResourceConverter
     //////////////////
     //  PROPERTIES  //
     //////////////////
+
+    public Building Location { get; private set; }
 
     public Resource[] Input { get; private set; }
 

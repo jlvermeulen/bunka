@@ -21,7 +21,8 @@ public class MapManager
                                                                                 {BuildingType.IronSmelter, 'I'},
                                                                                 {BuildingType.Lumberjack, 'L'},
                                                                                 {BuildingType.Quarry, 'Q'},
-                                                                                {BuildingType.Sawmill, 'S'}
+                                                                                {BuildingType.Sawmill, 'S'},
+                                                                                {BuildingType.Stockpile, 's'}
                                                                             };
 
     public MapManager()

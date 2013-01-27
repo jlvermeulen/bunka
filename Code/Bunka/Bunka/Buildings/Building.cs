@@ -8,6 +8,10 @@ public abstract class Building
         this.Position = position;
     }
 
+    public virtual void CollectResource(ResourceType type, uint amount) { }
+
+    public virtual void DeliverResource(ResourceType type, uint amount) { }
+
     //////////////////
     //  PROPERTIES  //
     //////////////////

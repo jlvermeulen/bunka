@@ -3,12 +3,13 @@
 // class for producing resources
 public class ResourceProducer
 {
-    public ResourceProducer(ResourceType type, uint amount, float speed)
+    public ResourceProducer(ResourceType type, uint amount, float speed, Building location)
     {
         this.OutputType = type;
         this.Amount = amount;
         this.Speed = this.TimeLeft = speed;
-        this.Output = BunkaGame.ResourceManager.CreateResource(type);
+        this.Output = BunkaGame.ResourceManager.CreateResource(type, 0, location);
+        this.Location = location;
     }
 
     public void Update(GameTime t)
@@ -27,7 +28,9 @@ public class ResourceProducer
     //  PROPERTIES  //
     //////////////////
 
-    public Resource Output { get; set; }
+    public Building Location { get; private set; }
+
+    public Resource Output { get; private set; }
 
     public ResourceType OutputType { get; private set; }
 

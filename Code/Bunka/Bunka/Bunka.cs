@@ -14,7 +14,6 @@ public class Bunka : Game
         this.graphics.PreferredBackBufferWidth = 1280;
         this.graphics.PreferredBackBufferHeight = 720;
         BunkaGame.Instantiate(this.Content);
-        BunkaGame.ResourceManager.AddInitialResources();
     }
 
     protected override void Initialize()
@@ -22,6 +21,8 @@ public class Bunka : Game
         base.Initialize();
         this.spriteBatch = new SpriteBatch(GraphicsDevice);
         this.IsMouseVisible = true;
+        this.IsFixedTimeStep = false;
+        BunkaGame.BuildingManager.BuildStockpile();
     }
 
     protected override void LoadContent()

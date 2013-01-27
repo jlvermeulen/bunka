@@ -21,7 +21,7 @@ public class ConstructionBuilding : Building
     //   METHODS    //
     //////////////////
 
-    public void DeliverResource(ResourceType type, uint amount)
+    public override void DeliverResource(ResourceType type, uint amount)
     {
         // update requested resources
         uint curr = this.costs[type];
